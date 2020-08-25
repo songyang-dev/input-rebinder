@@ -2,6 +2,8 @@
 using UnityEditor;
 using System.Collections;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using System;
 
 /// <summary>
 /// Namespace for the input rebinder plugin
@@ -12,7 +14,7 @@ namespace InputRebinder
     /// <summary>
     /// Script controlling the user GUI
     /// </summary>
-    public class UserGUI : EditorWindow
+    internal class UserGUI : EditorWindow
     {
         /// <summary>
         /// Reference to the parser script
@@ -37,7 +39,12 @@ namespace InputRebinder
         /// <summary>
         /// Whether the asset was analyzed
         /// </summary>
-        public bool HasAnalyzed = false;
+        internal bool HasAnalyzed = false;
+
+        /// <summary>
+        /// GUI code in linear order or execution
+        /// </summary>
+        internal List<Action> AnalysisDisplay = new List<Action>();
 
         /// <summary>
         /// Instantiate a parser
@@ -51,7 +58,7 @@ namespace InputRebinder
         /// Makes the plugin show up in unity menu
         /// </summary>
         [MenuItem("Window/Input Rebinder")]
-        public static void ShowWindow()
+        internal static void ShowWindow()
         {
             EditorWindow.GetWindow(typeof(UserGUI));
         }
@@ -73,41 +80,57 @@ namespace InputRebinder
 
         private void ShowAnalysis()
         {
-            
+            // section title
             GUILayout.Label("Analysis Results", EditorStyles.boldLabel);
+
+            // the rest is shown after analysis
+            foreach (var item in this.AnalysisDisplay)
+            {
+                item();
+            }
         }
 
+        // Information that is always displayed
+        #region Static information
         /// <summary>
         /// Creates a button depending on the context
         /// </summary>
         private void DisplayButton()
         {
-            string buttonText = HasAnalyzed ? "Generate Prefab" : "Analyze Asset";
+            GUILayout.BeginHorizontal();
+            using (new EditorGUI.DisabledGroupScope(asset == null))
+            {
+                if (GUILayout.Button("Analyze")) ClickAnalyze();
+            }
 
-            // on click
-            if (GUILayout.Button(buttonText))
-                ClickButton();
+            // Disable the generation button if no analysis was done
+            using (new EditorGUI.DisabledScope(HasAnalyzed == false))
+            {
+                if (GUILayout.Button("Generate")) ClickGenerate();
+            }
+            GUILayout.EndHorizontal();
         }
 
         /// <summary>
-        /// When the button is clicked
+        /// When 'generate' is clicked
         /// </summary>
-        private void ClickButton()
+        private void ClickGenerate()
         {
-            // asset is not null
-            if (asset != null)
-            {
-                // analysis is required before generation
-                if (HasAnalyzed)
-                    parser.Mode = Parser.ParserMode.Generate;
-                else
-                    parser.Mode = Parser.ParserMode.Analyze;
-                parser.Parse(asset);
-            }
-            // null asset
-            else
-                Debug.LogError("No input action asset has been chosen. Select an .inputactions file.");
+            parser.Mode = Parser.ParserMode.Generate;
+            parser.Parse(asset);
         }
+
+        /// <summary>
+        /// When 'analyze' is clicked
+        /// </summary>
+        private void ClickAnalyze()
+        {
+            parser.Mode = Parser.ParserMode.Analyze;
+            parser.Parse(asset);
+
+        }
+
+
 
         /// <summary>
         /// GUI to display before the generate button
@@ -132,6 +155,7 @@ namespace InputRebinder
             GUIContent nameTooltip = new GUIContent("Generated Prefab Name", "Name of the generated prefab. Conflicting file names will be overwritten.");
             prefabName = EditorGUILayout.TextField(nameTooltip, "Input Rebinder Controls");
         }
+        #endregion
     }
 
 }

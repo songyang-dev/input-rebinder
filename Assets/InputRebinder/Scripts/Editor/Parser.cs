@@ -14,12 +14,12 @@ namespace InputRebinder
     /// <summary>
     /// Reads the input action asset (.inputactions)
     /// </summary>
-    public class Parser
+    internal class Parser
     {
         /// <summary>
         /// Decides what extra action to perform when parsing
         /// </summary>
-        public enum ParserMode
+        internal enum ParserMode
         {
             /// Only analyze
             Analyze,
@@ -30,7 +30,7 @@ namespace InputRebinder
         /// <summary>
         /// Must be set when parser is enabled
         /// </summary>
-        public ParserMode Mode = ParserMode.Analyze;
+        internal ParserMode Mode = ParserMode.Analyze;
 
         /// <summary>
         /// Inner class for what to do during parsing
@@ -42,29 +42,24 @@ namespace InputRebinder
         /// </summary>
         private UserGUI userGUI;
 
-        /// <summary>
-        /// Object holding the results of the analysis
-        /// </summary>
-        /// <returns></returns>
-        private Analysis analysis = new Analysis();
-
-        public Parser(ParserMode mode, UserGUI userGUI)
+        internal Parser(ParserMode mode, UserGUI userGUI)
         {
             Mode = mode;
-            this.parsingAction = new ParsingAction(mode, this.analysis);
+            this.parsingAction = new ParsingAction(mode, userGUI);
             this.userGUI = userGUI;
         }
 
+        // Change when Unity changes their input system structure
         #region Parsing recursions
 
         /// <summary>
         /// Main parsing function to be called by the GUI
         /// </summary>
         /// <param name="asset">Reference to the input action asset</param>
-        public void Parse(InputActionAsset asset)
+        internal void Parse(InputActionAsset asset)
         {
-            // initiate parsing actions
-            parsingAction.Act(asset);
+            // parsing actions: enter
+            parsingAction.ActOnEnter(asset);
 
             var maps = asset.actionMaps;
 
@@ -74,7 +69,9 @@ namespace InputRebinder
                 Parse(map);
             }
 
-            // parsing completed
+            // parsing actions: exit
+            parsingAction.ActOnExit(asset);
+
             this.userGUI.HasAnalyzed = true;
         }
 
@@ -85,7 +82,7 @@ namespace InputRebinder
         private void Parse(InputActionMap map)
         {
             // parsing actions
-            parsingAction.Act(map);
+            parsingAction.ActOnEnter(map);
 
             var actions = map.actions;
 
@@ -93,6 +90,8 @@ namespace InputRebinder
             {
                 Parse(action);
             }
+
+            parsingAction.ActOnExit(map);
         }
 
         /// <summary>
@@ -102,12 +101,14 @@ namespace InputRebinder
         private void Parse(InputAction action)
         {
             // parsing actions
-            parsingAction.Act(action);
+            parsingAction.ActOnEnter(action);
 
             foreach (var b in action.bindings)
             {
                 Parse(b);
             }
+
+            parsingAction.ActOnExit(action);
         }
 
         /// <summary>
@@ -118,7 +119,7 @@ namespace InputRebinder
         {
             parsingAction.Act(b);
         }
-#endregion
+        #endregion
 
         /// <summary>
         /// Class that acts on the input action parsed data
@@ -127,20 +128,37 @@ namespace InputRebinder
         {
             private ParserMode mode;
 
-            private Analysis analysis;
+            private UserGUI userGUI;
 
-            public ParsingAction(ParserMode mode, Analysis analysis)
+            private Analysis analysis = null;
+
+            internal ParsingAction(ParserMode mode, UserGUI userGUI)
             {
                 this.mode = mode;
-                this.analysis = analysis;
+                this.userGUI = userGUI;
             }
 
             /// <summary>
-            /// Does nothing
+            /// In analyze mode, initiates a paired analysis instance and flushes the GUI code object.
+            /// In generate mode, does nothing.
             /// </summary>
             /// <param name="asset"></param>
-            internal void Act(InputActionAsset asset)
+            internal void ActOnEnter(InputActionAsset asset)
             {
+                switch (mode)
+                {
+                    case ParserMode.Analyze:
+                        this.analysis = new Analysis(asset);
+                        this.userGUI.AnalysisDisplay.Clear();
+                        break;
+
+                    case ParserMode.Generate:
+                        throw new NotImplementedException();
+                    //break;
+
+                    default:
+                        throw new Exception($"Unknown parser mode: {mode}");
+                }
 
             }
 
@@ -149,12 +167,12 @@ namespace InputRebinder
             /// In generate mode, execute the prefab creator for action maps.
             /// </summary>
             /// <param name="map"></param>
-            internal void Act(InputActionMap map)
+            internal void ActOnEnter(InputActionMap map)
             {
                 switch (mode)
                 {
                     case ParserMode.Analyze:
-                        
+                        this.userGUI.AnalysisDisplay.Add(this.analysis.AnalyzeMapOnEnter(map));
                         break;
 
                     case ParserMode.Generate:
@@ -170,7 +188,7 @@ namespace InputRebinder
             /// In generate mode, execute the prefab creator for actions.
             /// </summary>
             /// <param name="action"></param>
-            internal void Act(InputAction action)
+            internal void ActOnEnter(InputAction action)
             {
             }
 
@@ -181,6 +199,32 @@ namespace InputRebinder
             /// <param name="b"></param>
             internal void Act(InputBinding b)
             {
+            }
+
+            internal void ActOnExit(InputActionAsset asset)
+            {
+                //throw new NotImplementedException();
+            }
+
+            internal void ActOnExit(InputActionMap map)
+            {
+                switch (mode)
+                {
+                    case ParserMode.Analyze:
+                        this.userGUI.AnalysisDisplay.Add(this.analysis.AnalyzeMapOnExit(map));
+                        break;
+
+                    case ParserMode.Generate:
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            internal void ActOnExit(InputAction action)
+            {
+                //throw new NotImplementedException();
             }
         }
     }
