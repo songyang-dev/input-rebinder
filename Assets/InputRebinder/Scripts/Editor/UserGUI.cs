@@ -5,6 +5,10 @@ using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System;
 
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("Editor Tests")]
+[assembly: InternalsVisibleTo("Playmode Tests")]
+
 /// <summary>
 /// Namespace for the input rebinder plugin
 /// </summary>
@@ -24,7 +28,7 @@ namespace InputRebinder
         /// <summary>
         /// Input action asset to process
         /// </summary>
-        private InputActionAsset asset;
+        private InputActionAsset _asset;
 
         /// <summary>
         /// Path for the generated prefab 
@@ -46,6 +50,18 @@ namespace InputRebinder
         /// </summary>
         internal List<Action> AnalysisDisplay = new List<Action>();
 
+        private InputActionAsset asset
+        {
+            get => _asset;
+            set 
+            {
+                // switch the analysis flag to false
+                if (_asset != value) this.HasAnalyzed = false;
+
+                _asset = value;
+            }
+        }
+
         /// <summary>
         /// Instantiate a parser
         /// </summary>
@@ -58,7 +74,7 @@ namespace InputRebinder
         /// Makes the plugin show up in unity menu
         /// </summary>
         [MenuItem("Window/Input Rebinder")]
-        internal static void ShowWindow()
+        static void ShowWindow()
         {
             EditorWindow.GetWindow(typeof(UserGUI));
         }
@@ -100,7 +116,8 @@ namespace InputRebinder
             GUILayout.BeginHorizontal();
             using (new EditorGUI.DisabledGroupScope(asset == null))
             {
-                if (GUILayout.Button("Analyze")) ClickAnalyze();
+                if (GUILayout.Button(HasAnalyzed ? "Re-analyze" : "Analyze"))
+                    ClickAnalyze();
             }
 
             // Disable the generation button if no analysis was done
