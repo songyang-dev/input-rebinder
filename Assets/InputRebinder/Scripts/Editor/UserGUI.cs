@@ -50,10 +50,15 @@ namespace InputRebinder
         /// </summary>
         internal List<Action> AnalysisDisplay = new List<Action>();
 
+        /// <summary>
+        /// For allowing the analysis part to to scroll
+        /// </summary>
+        private Vector2 scrollPosAnalysis = default;
+
         private InputActionAsset asset
         {
             get => _asset;
-            set 
+            set
             {
                 // switch the analysis flag to false
                 if (_asset != value) this.HasAnalyzed = false;
@@ -68,6 +73,7 @@ namespace InputRebinder
         private void OnEnable()
         {
             this.parser = new Parser(Parser.ParserMode.Analyze, this);
+
         }
 
         /// <summary>
@@ -84,14 +90,19 @@ namespace InputRebinder
         /// </summary>
         void OnGUI()
         {
-            // things above the button
+
+            // things above the buttons
             ShowPreamble();
 
-            // make a button
+            // make the generation and analysis buttons
             DisplayButton();
 
-            // analysis results
-            if (HasAnalyzed) ShowAnalysis();
+            using (var scrollView = new EditorGUILayout.ScrollViewScope(scrollPosAnalysis))
+            {
+                scrollPosAnalysis = scrollView.scrollPosition;
+                // analysis results
+                if (HasAnalyzed) ShowAnalysis();
+            }
         }
 
         private void ShowAnalysis()
@@ -157,7 +168,7 @@ namespace InputRebinder
             titleContent = new GUIContent("Input Rebinder"); // tab title
 
             // label
-            GUILayout.Label("Input Action Asset", EditorStyles.boldLabel);
+            EditorGUILayout.LabelField("Input Action Asset", EditorStyles.boldLabel);
 
             // asset reference field
             GUIContent assetTooltip = new GUIContent(".inputactions file", "Unity's new input system asset file that contains your control bindings");

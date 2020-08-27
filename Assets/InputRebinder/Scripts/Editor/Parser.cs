@@ -190,6 +190,18 @@ namespace InputRebinder
             /// <param name="action"></param>
             internal void ActOnEnter(InputAction action)
             {
+                switch (mode)
+                {
+                    case ParserMode.Analyze:
+                        this.userGUI.AnalysisDisplay.Add(this.analysis.AnalyzeActionOnEnter(action));
+                        break;
+
+                    case ParserMode.Generate:
+                        break;
+
+                    default:
+                        throw new Exception($"Unknown parser mode: {mode}");
+                }
             }
 
             /// <summary>
@@ -203,7 +215,17 @@ namespace InputRebinder
 
             internal void ActOnExit(InputActionAsset asset)
             {
-                //throw new NotImplementedException();
+                switch (mode)
+                {
+                    case ParserMode.Analyze:
+                        break;
+
+                    case ParserMode.Generate:
+                        break;
+
+                    default:
+                        break;
+                }
             }
 
             internal void ActOnExit(InputActionMap map)
@@ -224,7 +246,18 @@ namespace InputRebinder
 
             internal void ActOnExit(InputAction action)
             {
-                //throw new NotImplementedException();
+                switch (mode)
+                {
+                    case ParserMode.Analyze:
+                        this.userGUI.AnalysisDisplay.Add(this.analysis.AnalyzeActionOnExit(action));
+                        break;
+
+                    case ParserMode.Generate:
+                        break;
+
+                    default:
+                        break;
+                }
             }
         }
     }

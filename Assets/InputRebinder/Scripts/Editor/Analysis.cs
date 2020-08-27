@@ -28,16 +28,33 @@ namespace InputRebinder
         /// <returns>Empty dictionary</returns>
         private Dictionary<InputActionMap, bool> maps = new Dictionary<InputActionMap, bool>();
 
+        /// <summary>
+        /// Generation options relating to actions
+        /// </summary>
+        /// <typeparam name="InputAction">Action from Unity</typeparam>
+        /// <typeparam name="bool">Whether to generate</typeparam>
+        /// <returns>Empty dictionary</returns>
+        private Dictionary<InputAction, bool> actions = new Dictionary<InputAction, bool>();
+
         #endregion
 
         #region UI parameters
+
         /// <summary>
-        /// Used to display the window UI
+        /// Used to display the window UI for maps
         /// </summary>
         /// <typeparam name="InputActionMap">Action map from Unity</typeparam>
         /// <typeparam name="bool">Whether the UI is folding this map or not</typeparam>
-        /// <returns>Empty dictionary</returns>
+        /// <returns>Whether the UI is folding this map or not</returns>
         private Dictionary<InputActionMap, bool> mapFoldout = new Dictionary<InputActionMap, bool>();
+
+        /// <summary>
+        /// Used to display the window UI for actions
+        /// </summary>
+        /// <typeparam name="InputAction">Action from Unity</typeparam>
+        /// <typeparam name="bool">Whether the UI is folding this action or not</typeparam>
+        /// <returns>Analysis information about the action</returns>
+        private Dictionary<InputAction, bool> actionFoldout = new Dictionary<InputAction, bool>();
 
         #endregion
 
@@ -71,17 +88,57 @@ namespace InputRebinder
             {
                 // generation option
                 if (maps.ContainsKey(map))
-                    maps[map] = EditorGUILayout.ToggleLeft("Generate", maps[map]);
+                    maps[map] = EditorGUILayout.ToggleLeft("Generate action map", maps[map]);
                 else
-                    maps.Add(map, EditorGUILayout.ToggleLeft("Generate", true));
+                    maps.Add(map, EditorGUILayout.ToggleLeft("Generate action map", true));
             }
         };
 
+        /// <summary>
+        /// Closes UI groups
+        /// </summary>
+        /// <param name="map"></param>
+        /// <returns></returns>
         internal Action AnalyzeMapOnExit(InputActionMap map) => () =>
         {
             // un-indent
             EditorGUI.indentLevel--;
             EditorGUILayout.EndFoldoutHeaderGroup();
+        };
+
+        /// <summary>
+        /// Generates GUI code for actions and links analysis data
+        /// </summary>
+        /// <param name="action">Input systemaction</param>
+        /// <returns></returns>
+        internal Action AnalyzeActionOnEnter(InputAction action) => () =>
+        {
+            if (!mapFoldout[action.actionMap]) return;
+
+            // label
+            EditorGUILayout.LabelField(action.name);
+
+            // indent
+            EditorGUI.indentLevel++;
+
+            // generation option
+            if (actions.ContainsKey(action))
+                actions[action] = EditorGUILayout.ToggleLeft("Generate", actions[action]);
+            else
+                actions.Add(action, EditorGUILayout.ToggleLeft("Generate", true));
+
+        };
+
+        /// <summary>
+        /// Remove indentation
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
+        internal Action AnalyzeActionOnExit(InputAction action) => () =>
+        {
+            if (!mapFoldout[action.actionMap]) return;
+            // un-indent
+            EditorGUI.indentLevel--;
         };
     }
 }
