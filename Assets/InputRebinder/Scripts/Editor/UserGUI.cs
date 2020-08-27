@@ -176,7 +176,7 @@ namespace InputRebinder
                 as InputActionAsset;
 
             // generated prefab location
-            GUIContent locationTooltip = new GUIContent("Generated Prefab Location", "Where to store the generated prefab");
+            GUIContent locationTooltip = new GUIContent("Generated Prefab Folder", "Where to store the generated prefab");
             path = EditorGUILayout.TextField(locationTooltip, "Assets/Prefabs");
 
             // generated prefab name

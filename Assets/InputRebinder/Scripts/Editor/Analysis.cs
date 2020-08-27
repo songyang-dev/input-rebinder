@@ -25,7 +25,7 @@ namespace InputRebinder
         /// </summary>
         /// <typeparam name="InputActionMap">Action map from Unity</typeparam>
         /// <typeparam name="bool">Whether to generate the prefab for this map</typeparam>
-        /// <returns>Empty dictionary</returns>
+        /// <returns>Whether to generate the prefab for this map</returns>
         private Dictionary<InputActionMap, bool> maps = new Dictionary<InputActionMap, bool>();
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace InputRebinder
         /// </summary>
         /// <typeparam name="InputAction">Action from Unity</typeparam>
         /// <typeparam name="bool">Whether to generate</typeparam>
-        /// <returns>Empty dictionary</returns>
+        /// <returns>Whether to generate</returns>
         private Dictionary<InputAction, bool> actions = new Dictionary<InputAction, bool>();
 
         #endregion
@@ -113,7 +113,10 @@ namespace InputRebinder
         /// <returns></returns>
         internal Action AnalyzeActionOnEnter(InputAction action) => () =>
         {
+            // do not display when the map is not folded
             if (!mapFoldout[action.actionMap]) return;
+            // grey out the action when the map is not generated
+            if (!maps[action.actionMap]) EditorGUI.BeginDisabledGroup(true);
 
             // label
             EditorGUILayout.LabelField(action.name);
@@ -130,13 +133,14 @@ namespace InputRebinder
         };
 
         /// <summary>
-        /// Remove indentation
+        /// Remove indentation and closes UI groups
         /// </summary>
         /// <param name="action"></param>
         /// <returns></returns>
         internal Action AnalyzeActionOnExit(InputAction action) => () =>
         {
             if (!mapFoldout[action.actionMap]) return;
+            if (!maps[action.actionMap]) EditorGUI.EndDisabledGroup();
             // un-indent
             EditorGUI.indentLevel--;
         };
