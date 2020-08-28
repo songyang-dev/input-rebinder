@@ -205,7 +205,7 @@ namespace InputRebinder
             }
 
             /// <summary>
-            /// In analyze mode, present the binding to the GUI.
+            /// In analyze mode, ask what kind of bindings should be excluded.
             /// In generate mode, execute the prefab creator for bindings.
             /// </summary>
             /// <param name="b"></param>

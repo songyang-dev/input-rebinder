@@ -87,10 +87,11 @@ namespace InputRebinder
             if (mapFoldout[map])
             {
                 // generation option
+                var checkMark = new GUIContent("Generate action map", "Check if you want this action map to be in the generated prefab");
                 if (maps.ContainsKey(map))
-                    maps[map] = EditorGUILayout.ToggleLeft("Generate action map", maps[map]);
+                    maps[map] = EditorGUILayout.ToggleLeft(checkMark, maps[map]);
                 else
-                    maps.Add(map, EditorGUILayout.ToggleLeft("Generate action map", true));
+                    maps.Add(map, EditorGUILayout.ToggleLeft(checkMark, true));
             }
         };
 
@@ -118,17 +119,15 @@ namespace InputRebinder
             // grey out the action when the map is not generated
             if (!maps[action.actionMap]) EditorGUI.BeginDisabledGroup(true);
 
-            // label
-            EditorGUILayout.LabelField(action.name);
-
             // indent
             EditorGUI.indentLevel++;
 
             // generation option
+            var checkMark = new GUIContent(action.name, "Check if you want to include the action in the prefab");
             if (actions.ContainsKey(action))
-                actions[action] = EditorGUILayout.ToggleLeft("Generate", actions[action]);
+                actions[action] = EditorGUILayout.ToggleLeft(checkMark, actions[action]);
             else
-                actions.Add(action, EditorGUILayout.ToggleLeft("Generate", true));
+                actions.Add(action, EditorGUILayout.ToggleLeft(checkMark, true));
 
         };
 
