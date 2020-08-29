@@ -11,21 +11,44 @@ namespace Tests
 {
     public class ParseTests
     {
+        UserGUI window;
+        Parser parser;
+
         // A Test behaves as an ordinary method
         [Test]
         public void Empty()
         {
-            // Use the Assert class to test conditions
-            
-            // get parser
-            UserGUI.ShowWindow();
-            var window = UserGUI.window;
-            var parser = new Parser(Parser.ParserMode.Analyze, window);
-
             // pass in the asset
-            InputActionAsset asset = AssetDatabase.LoadAssetAtPath<InputActionAsset>("Packages/com.songyang.inputrebinder/Tests/Editor/Test Assets/Empty.inputactions");
+            ParseAsset("Packages/com.songyang.inputrebinder/Tests/Editor/Test Assets/Empty.inputactions");
+        }
+
+        [Test]
+        public void One()
+        {
+            // pass in the asset
+            ParseAsset("Packages/com.songyang.inputrebinder/Tests/Editor/Test Assets/One.inputactions");
+        }
+
+        [Test]
+        public void Default()
+        {
+            // pass in the asset
+            ParseAsset("Packages/com.songyang.inputrebinder/Tests/Editor/Test Assets/Default.inputactions");
+        }
+
+        private void ParseAsset(string path)
+        {
+            InputActionAsset asset = AssetDatabase.LoadAssetAtPath<InputActionAsset>(path);
             Assert.NotNull(asset, "Asset not found");
             parser.Parse(asset);
+        }
+
+        [SetUp]
+        public void GetParser()
+        {
+            UserGUI.ShowWindow();
+            window = UserGUI.window;
+            parser = new Parser(Parser.ParserMode.Analyze, window);
         }
     }
 }

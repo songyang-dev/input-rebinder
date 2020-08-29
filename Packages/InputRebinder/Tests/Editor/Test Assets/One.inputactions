@@ -1,0 +1,45 @@
+{
+    "name": "One",
+    "maps": [
+        {
+            "name": "One",
+            "id": "8025c70e-ebbb-4745-a819-137fbdbcb231",
+            "actions": [
+                {
+                    "name": "Only one",
+                    "type": "Button",
+                    "id": "ff901f95-5ad8-42bb-9959-c6e5e5142ab1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "563ebec4-78da-4c47-aaf5-6c9eca7dffd1",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Only one",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Keyboard",
+            "bindingGroup": "Keyboard",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
