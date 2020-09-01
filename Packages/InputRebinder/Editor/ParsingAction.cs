@@ -1,5 +1,7 @@
 using UnityEngine.InputSystem;
 using System;
+using UnityEditor;
+using System.IO;
 
 /// <summary>
 /// Contains editor code for generating the prefabs from an inputaction file
@@ -18,7 +20,11 @@ namespace InputRebinder
 
             private UserGUI userGUI;
 
-            private Analysis analysis = null;
+            private Analysis analysis = default;
+
+            private PrefabCreator creator = default;
+            
+            private string newPrefabAsset = default;
 
             internal ParsingAction(ParserMode mode, UserGUI userGUI)
             {
@@ -41,8 +47,8 @@ namespace InputRebinder
                         break;
 
                     case ParserMode.Generate:
-                        throw new NotImplementedException();
-                    //break;
+                        this.creator = new PrefabCreator(this.analysis, this.newPrefabAsset);
+                    break;
 
                     default:
                         throw new Exception($"Unknown parser mode: {mode}");
@@ -114,6 +120,23 @@ namespace InputRebinder
                     default:
                         break;
                 }
+            }
+
+            /// <summary>
+            /// Sets the prefab generation folder location and the new prefab's name
+            /// </summary>
+            /// <param name="path">Location to place the prefab</param>
+            /// <param name="prefabName">Name of the prefab</param>
+            internal void SetGenerationOptions(string path, string prefabName)
+            {
+                // creates the folder if it doesn't exist
+                if (!AssetDatabase.IsValidFolder(path))
+                {
+                    PrefabCreator.CreateFolders(path);
+                }
+
+                // sets the path and name for the generation 
+                this.newPrefabAsset = $"{path}/{prefabName}";
             }
 
             internal void ActOnExit(InputActionMap map)

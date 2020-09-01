@@ -149,6 +149,7 @@ namespace InputRebinder
         private void ClickGenerate()
         {
             parser.Mode = Parser.ParserMode.Generate;
+            parser.SetGenerationOptions(path, prefabName);
             parser.Parse(asset);
         }
 
@@ -181,11 +182,11 @@ namespace InputRebinder
 
             // generated prefab location
             GUIContent locationTooltip = new GUIContent("Generated Prefab Folder", "Where to store the generated prefab");
-            path = EditorGUILayout.TextField(locationTooltip, "Assets/Prefabs");
+            path = EditorGUILayout.TextField(locationTooltip, string.IsNullOrEmpty(path) ? "Assets/Prefabs": path);
 
             // generated prefab name
             GUIContent nameTooltip = new GUIContent("Generated Prefab Name", "Name of the generated prefab. Conflicting file names will be overwritten.");
-            prefabName = EditorGUILayout.TextField(nameTooltip, "Input Rebinder Controls");
+            prefabName = EditorGUILayout.TextField(nameTooltip, string.IsNullOrEmpty(prefabName) ? "Input Rebinder Controls" : prefabName);
         }
         #endregion
     }

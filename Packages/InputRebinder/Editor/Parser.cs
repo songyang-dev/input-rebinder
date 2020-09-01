@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.InputSystem;
+using System;
 
 /// <summary>
 /// Contains editor code for generating the prefabs from an inputaction file
@@ -118,8 +119,19 @@ namespace InputRebinder
         {
             parsingAction.Act(b);
         }
-
         #endregion
+
+        /// <summary>
+        /// Sets the options for generating a new prefab
+        /// </summary>
+        /// <param name="path">Path to the folder</param>
+        /// <param name="prefabName">Name of the prefab</param>
+        internal void SetGenerationOptions(string path, string prefabName)
+        {
+            parsingAction.SetGenerationOptions(path, prefabName);
+        }
+
+        
     }
 
 }

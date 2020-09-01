@@ -1,17 +1,14 @@
 {
-    "name": "Unity.com.songyang.inputrebinder.Editor",
+    "name": "Unity.com.songyang.inputrebinder",
     "references": [
-        "Unity.InputSystem",
-        "Unity.com.songyang.inputrebinder"
+        "Unity.TextMeshPro"
     ],
-    "includePlatforms": [
-        "Editor"
-    ],
+    "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
     "precompiledReferences": [],
-    "autoReferenced": false,
+    "autoReferenced": true,
     "defineConstraints": [],
     "versionDefines": [],
     "noEngineReferences": false
