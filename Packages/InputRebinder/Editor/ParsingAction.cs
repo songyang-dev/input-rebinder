@@ -16,7 +16,7 @@ namespace InputRebinder
         /// </summary>
         private class ParsingAction
         {
-            private ParserMode mode;
+            internal ParserMode Mode;
 
             private UserGUI userGUI;
 
@@ -24,11 +24,19 @@ namespace InputRebinder
 
             private PrefabCreator creator = default;
             
-            private string newPrefabAsset = default;
+            /// <summary>
+            /// Path to the prefab's folder
+            /// </summary>
+            private string pathToPrefabFolder = default;
+
+            /// <summary>
+            /// Name of the new prefab
+            /// </summary>
+            private string newPrefabName = default;
 
             internal ParsingAction(ParserMode mode, UserGUI userGUI)
             {
-                this.mode = mode;
+                this.Mode = mode;
                 this.userGUI = userGUI;
             }
 
@@ -39,7 +47,7 @@ namespace InputRebinder
             /// <param name="asset"></param>
             internal void ActOnEnter(InputActionAsset asset)
             {
-                switch (mode)
+                switch (Mode)
                 {
                     case ParserMode.Analyze:
                         this.analysis = new Analysis(asset);
@@ -47,11 +55,11 @@ namespace InputRebinder
                         break;
 
                     case ParserMode.Generate:
-                        this.creator = new PrefabCreator(this.analysis, this.newPrefabAsset);
-                    break;
+                        this.creator = new PrefabCreator(this.analysis, this.pathToPrefabFolder, this.newPrefabName);
+                        break;
 
                     default:
-                        throw new Exception($"Unknown parser mode: {mode}");
+                        throw new Exception($"Unknown parser mode: {Mode}");
                 }
 
             }
@@ -63,7 +71,7 @@ namespace InputRebinder
             /// <param name="map"></param>
             internal void ActOnEnter(InputActionMap map)
             {
-                switch (mode)
+                switch (Mode)
                 {
                     case ParserMode.Analyze:
                         this.userGUI.AnalysisDisplay.Add(this.analysis.AnalyzeMapOnEnter(map));
@@ -73,7 +81,7 @@ namespace InputRebinder
                         break;
 
                     default:
-                        throw new Exception($"Unknown parser mode: {mode}");
+                        throw new Exception($"Unknown parser mode: {Mode}");
                 }
             }
 
@@ -84,7 +92,7 @@ namespace InputRebinder
             /// <param name="action"></param>
             internal void ActOnEnter(InputAction action)
             {
-                switch (mode)
+                switch (Mode)
                 {
                     case ParserMode.Analyze:
                         this.userGUI.AnalysisDisplay.Add(this.analysis.AnalyzeActionOnEnter(action));
@@ -94,7 +102,7 @@ namespace InputRebinder
                         break;
 
                     default:
-                        throw new Exception($"Unknown parser mode: {mode}");
+                        throw new Exception($"Unknown parser mode: {Mode}");
                 }
             }
 
@@ -109,7 +117,7 @@ namespace InputRebinder
 
             internal void ActOnExit(InputActionAsset asset)
             {
-                switch (mode)
+                switch (Mode)
                 {
                     case ParserMode.Analyze:
                         break;
@@ -129,19 +137,23 @@ namespace InputRebinder
             /// <param name="prefabName">Name of the prefab</param>
             internal void SetGenerationOptions(string path, string prefabName)
             {
+                // check if prefabName is valid
+                if (string.IsNullOrEmpty(prefabName))
+                    throw new Exception("The name of the generated prefab cannot be empty.");
+
                 // creates the folder if it doesn't exist
                 if (!AssetDatabase.IsValidFolder(path))
                 {
                     PrefabCreator.CreateFolders(path);
                 }
 
-                // sets the path and name for the generation 
-                this.newPrefabAsset = $"{path}/{prefabName}";
+                this.pathToPrefabFolder = path;
+                this.newPrefabName = prefabName;
             }
 
             internal void ActOnExit(InputActionMap map)
             {
-                switch (mode)
+                switch (Mode)
                 {
                     case ParserMode.Analyze:
                         this.userGUI.AnalysisDisplay.Add(this.analysis.AnalyzeMapOnExit(map));
@@ -157,7 +169,7 @@ namespace InputRebinder
 
             internal void ActOnExit(InputAction action)
             {
-                switch (mode)
+                switch (Mode)
                 {
                     case ParserMode.Analyze:
                         this.userGUI.AnalysisDisplay.Add(this.analysis.AnalyzeActionOnExit(action));

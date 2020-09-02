@@ -30,7 +30,7 @@ namespace InputRebinder
         /// <summary>
         /// Must be set when parser is enabled
         /// </summary>
-        internal ParserMode Mode = ParserMode.Analyze;
+        private ParserMode _mode = ParserMode.Analyze;
 
         /// <summary>
         /// Inner class for what to do during parsing
@@ -41,6 +41,15 @@ namespace InputRebinder
         /// Reference to the GUI window populator
         /// </summary>
         private UserGUI userGUI;
+
+        internal ParserMode Mode
+        {
+            get => _mode;
+            set {
+                _mode = value;
+                if (parsingAction != null) parsingAction.Mode = _mode;
+            }
+        }
 
         internal Parser(ParserMode mode, UserGUI userGUI)
         {
@@ -131,7 +140,7 @@ namespace InputRebinder
             parsingAction.SetGenerationOptions(path, prefabName);
         }
 
-        
+
     }
 
 }
