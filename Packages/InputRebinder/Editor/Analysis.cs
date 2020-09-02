@@ -11,13 +11,9 @@ namespace InputRebinder
     /// <summary>
     /// Results of the analysis, structured in pairs
     /// </summary>
-    internal class Analysis
+    internal class Analysis : IParsingAction
     {
         #region Analysis results
-        /// <summary>
-        /// Paired asset
-        /// </summary>
-        private InputActionAsset asset;
 
         /// <summary>
         /// Whether the map is to be ignored in generation.
@@ -41,6 +37,11 @@ namespace InputRebinder
         #region UI parameters
 
         /// <summary>
+        /// Reference to the GUI window
+        /// </summary>
+        private UserGUI userGUI;
+
+        /// <summary>
         /// Used to display the window UI for maps
         /// </summary>
         /// <typeparam name="InputActionMap">Action map from Unity</typeparam>
@@ -61,10 +62,11 @@ namespace InputRebinder
         /// <summary>
         /// Initialize an analysis for the paired asset
         /// </summary>
-        /// <param name="asset"></param>
-        internal Analysis(InputActionAsset asset)
+        /// <param name="userGUI">User window</param>
+        internal Analysis(UserGUI userGUI)
         {
-            this.asset = asset;
+            this.userGUI = userGUI;
+            this.userGUI.AnalysisDisplay.Clear();
         }
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace InputRebinder
         /// Generates GUI code for actions and links analysis data
         /// </summary>
         /// <param name="action">Input systemaction</param>
-        /// <returns></returns>
+        /// <returns>GUI code</returns>
         internal Action AnalyzeActionOnEnter(InputAction action) => () =>
         {
             // do not display when the map is not folded
@@ -143,5 +145,40 @@ namespace InputRebinder
             // un-indent
             EditorGUI.indentLevel--;
         };
+
+        #region Interface implementation
+        public void ActOnEnter(InputActionAsset asset)
+        {
+        }
+
+        public void ActOnEnter(InputActionMap map)
+        {
+            this.userGUI.AnalysisDisplay.Add(AnalyzeMapOnEnter(map));
+        }
+
+        public void ActOnEnter(InputAction action)
+        {
+            this.userGUI.AnalysisDisplay.Add(AnalyzeActionOnEnter(action));
+        }
+
+        public void Act(InputBinding b)
+        {
+        }
+
+        public void ActOnExit(InputActionAsset asset)
+        {
+        }
+
+        public void ActOnExit(InputActionMap map)
+        {
+            this.userGUI.AnalysisDisplay.Add(AnalyzeMapOnExit(map));
+        }
+
+        public void ActOnExit(InputAction action)
+        {
+            this.userGUI.AnalysisDisplay.Add(AnalyzeActionOnExit(action));
+        }
+
+        #endregion
     }
 }

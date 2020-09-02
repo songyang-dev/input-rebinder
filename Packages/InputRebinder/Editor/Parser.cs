@@ -14,7 +14,7 @@ namespace InputRebinder
     /// <summary>
     /// Reads the input action asset (.inputactions)
     /// </summary>
-    internal partial class Parser
+    internal class Parser
     {
         /// <summary>
         /// Decides what extra action to perform when parsing
@@ -30,32 +30,25 @@ namespace InputRebinder
         /// <summary>
         /// Must be set when parser is enabled
         /// </summary>
-        private ParserMode _mode = ParserMode.Analyze;
+        private ParserMode mode;
 
         /// <summary>
         /// Inner class for what to do during parsing
         /// </summary>
-        private ParsingAction parsingAction;
+        private IParsingAction parsingAction;
 
         /// <summary>
         /// Reference to the GUI window populator
         /// </summary>
         private UserGUI userGUI;
 
-        internal ParserMode Mode
+        /// <summary>
+        /// Creates a parser
+        /// </summary>
+        /// <param name="action">Action done during parsing</param>
+        internal Parser(IParsingAction action)
         {
-            get => _mode;
-            set {
-                _mode = value;
-                if (parsingAction != null) parsingAction.Mode = _mode;
-            }
-        }
-
-        internal Parser(ParserMode mode, UserGUI userGUI)
-        {
-            Mode = mode;
-            this.parsingAction = new ParsingAction(mode, userGUI);
-            this.userGUI = userGUI;
+            this.parsingAction = action;
         }
 
         // Change when Unity changes their input system structure
@@ -80,8 +73,6 @@ namespace InputRebinder
 
             // parsing actions: exit
             parsingAction.ActOnExit(asset);
-
-            this.userGUI.HasAnalyzed = true;
         }
 
         /// <summary>
@@ -129,17 +120,6 @@ namespace InputRebinder
             parsingAction.Act(b);
         }
         #endregion
-
-        /// <summary>
-        /// Sets the options for generating a new prefab
-        /// </summary>
-        /// <param name="path">Path to the folder</param>
-        /// <param name="prefabName">Name of the prefab</param>
-        internal void SetGenerationOptions(string path, string prefabName)
-        {
-            parsingAction.SetGenerationOptions(path, prefabName);
-        }
-
 
     }
 

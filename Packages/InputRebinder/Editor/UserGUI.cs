@@ -47,7 +47,7 @@ namespace InputRebinder
         /// <summary>
         /// Whether the asset was analyzed
         /// </summary>
-        internal bool HasAnalyzed = false;
+        private Analysis analysisResults = null;
 
         /// <summary>
         /// GUI code in linear order or execution
@@ -64,20 +64,11 @@ namespace InputRebinder
             get => _asset;
             set
             {
-                // switch the analysis flag to false
-                if (_asset != value) this.HasAnalyzed = false;
+                // remove previous analysis
+                if (_asset != value) this.analysisResults = null;
 
                 _asset = value;
             }
-        }
-
-        /// <summary>
-        /// Instantiate a parser
-        /// </summary>
-        private void OnEnable()
-        {
-            this.parser = new Parser(Parser.ParserMode.Analyze, this);
-
         }
 
         /// <summary>
@@ -105,7 +96,7 @@ namespace InputRebinder
             {
                 scrollPosAnalysis = scrollView.scrollPosition;
                 // analysis results
-                if (HasAnalyzed) ShowAnalysis();
+                if (analysisResults != null) ShowAnalysis();
             }
         }
 
@@ -131,12 +122,12 @@ namespace InputRebinder
             GUILayout.BeginHorizontal();
             using (new EditorGUI.DisabledGroupScope(asset == null))
             {
-                if (GUILayout.Button(HasAnalyzed ? "Re-analyze" : "Analyze"))
+                if (GUILayout.Button(analysisResults != null ? "Re-analyze" : "Analyze"))
                     ClickAnalyze();
             }
 
             // Disable the generation button if no analysis was done
-            using (new EditorGUI.DisabledScope(HasAnalyzed == false))
+            using (new EditorGUI.DisabledScope(analysisResults == null))
             {
                 if (GUILayout.Button("Generate")) ClickGenerate();
             }
@@ -148,8 +139,7 @@ namespace InputRebinder
         /// </summary>
         private void ClickGenerate()
         {
-            parser.Mode = Parser.ParserMode.Generate;
-            parser.SetGenerationOptions(path, prefabName);
+            this.parser = new Parser(new PrefabCreator(this.analysisResults, this.path, this.prefabName));
             parser.Parse(asset);
         }
 
@@ -158,9 +148,9 @@ namespace InputRebinder
         /// </summary>
         private void ClickAnalyze()
         {
-            parser.Mode = Parser.ParserMode.Analyze;
+            this.analysisResults = new Analysis(this);
+            this.parser = new Parser(analysisResults);
             parser.Parse(asset);
-
         }
 
 

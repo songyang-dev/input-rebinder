@@ -48,7 +48,7 @@ namespace Tests
         {
             UserGUI.ShowWindow();
             window = UserGUI.window;
-            parser = new Parser(Parser.ParserMode.Analyze, window);
+            parser = new Parser(new Analysis(window));
         }
     }
 }

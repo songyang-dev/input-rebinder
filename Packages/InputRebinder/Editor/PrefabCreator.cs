@@ -7,10 +7,11 @@ using InputRebinder.Runtime;
 using System.Text;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using UnityEngine.InputSystem;
 
 namespace InputRebinder
 {
-    internal class PrefabCreator
+    internal class PrefabCreator : IParsingAction
     {
         /// <summary>
         /// Reference to the analysis object
@@ -64,6 +65,9 @@ namespace InputRebinder
             this.newPrefabFolder = newPrefabFolder;
             this.newPrefabName = newPrefabName;
 
+            // create folders
+            CreateFolders(newPrefabFolder);
+
             // load prefabs
             LoadPrefabs();
 
@@ -115,6 +119,8 @@ namespace InputRebinder
         /// <param name="path">Folder to create</param>
         internal static void CreateFolders(string path)
         {
+            if (AssetDatabase.IsValidFolder(path)) return;
+
             char separator = '/';
             string[] directories = path.Split(separator);
             if (!directories[0].Equals("Assets"))
@@ -143,6 +149,39 @@ namespace InputRebinder
             }
         }
 
-        
+        public void ActOnEnter(InputActionAsset asset)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void ActOnEnter(InputActionMap map)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void ActOnEnter(InputAction action)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void Act(InputBinding b)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void ActOnExit(InputActionAsset asset)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void ActOnExit(InputActionMap map)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public void ActOnExit(InputAction action)
+        {
+            //throw new NotImplementedException();
+        }
     }
 }
