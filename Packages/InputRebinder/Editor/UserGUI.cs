@@ -47,12 +47,7 @@ namespace InputRebinder
         /// <summary>
         /// Whether the asset was analyzed
         /// </summary>
-        private Analysis analysisResults = null;
-
-        /// <summary>
-        /// GUI code in linear order or execution
-        /// </summary>
-        internal List<Action> AnalysisDisplay = new List<Action>();
+        private Analysis analysis = null;
 
         /// <summary>
         /// For allowing the analysis part to to scroll
@@ -65,7 +60,7 @@ namespace InputRebinder
             set
             {
                 // remove previous analysis
-                if (_asset != value) this.analysisResults = null;
+                if (_asset != value) this.analysis = null;
 
                 _asset = value;
             }
@@ -96,7 +91,7 @@ namespace InputRebinder
             {
                 scrollPosAnalysis = scrollView.scrollPosition;
                 // analysis results
-                if (analysisResults != null) ShowAnalysis();
+                if (analysis != null) ShowAnalysis();
             }
         }
 
@@ -106,7 +101,7 @@ namespace InputRebinder
             GUILayout.Label("Analysis Results", EditorStyles.boldLabel);
 
             // the rest is shown after analysis
-            foreach (var item in this.AnalysisDisplay)
+            foreach (var item in this.analysis.Results)
             {
                 item();
             }
@@ -122,12 +117,12 @@ namespace InputRebinder
             GUILayout.BeginHorizontal();
             using (new EditorGUI.DisabledGroupScope(asset == null))
             {
-                if (GUILayout.Button(analysisResults != null ? "Re-analyze" : "Analyze"))
+                if (GUILayout.Button(analysis != null ? "Re-analyze" : "Analyze"))
                     ClickAnalyze();
             }
 
             // Disable the generation button if no analysis was done
-            using (new EditorGUI.DisabledScope(analysisResults == null))
+            using (new EditorGUI.DisabledScope(analysis == null))
             {
                 if (GUILayout.Button("Generate")) ClickGenerate();
             }
@@ -139,7 +134,7 @@ namespace InputRebinder
         /// </summary>
         private void ClickGenerate()
         {
-            this.parser = new Parser(new PrefabCreator(this.analysisResults, this.path, this.prefabName));
+            this.parser = new Parser(new PrefabCreator(this.analysis, this.path, this.prefabName));
             parser.Parse(asset);
         }
 
@@ -148,8 +143,8 @@ namespace InputRebinder
         /// </summary>
         private void ClickAnalyze()
         {
-            this.analysisResults = new Analysis(this);
-            this.parser = new Parser(analysisResults);
+            this.analysis = new Analysis();
+            this.parser = new Parser(analysis);
             parser.Parse(asset);
         }
 

@@ -37,9 +37,9 @@ namespace InputRebinder
         #region UI parameters
 
         /// <summary>
-        /// Reference to the GUI window
+        /// GUI code to display the results
         /// </summary>
-        private UserGUI userGUI;
+        internal List<Action> Results;
 
         /// <summary>
         /// Used to display the window UI for maps
@@ -62,11 +62,9 @@ namespace InputRebinder
         /// <summary>
         /// Initialize an analysis for the paired asset
         /// </summary>
-        /// <param name="userGUI">User window</param>
-        internal Analysis(UserGUI userGUI)
+        internal Analysis()
         {
-            this.userGUI = userGUI;
-            this.userGUI.AnalysisDisplay.Clear();
+            this.Results = new List<Action>();
         }
 
         /// <summary>
@@ -153,12 +151,12 @@ namespace InputRebinder
 
         public void ActOnEnter(InputActionMap map)
         {
-            this.userGUI.AnalysisDisplay.Add(AnalyzeMapOnEnter(map));
+            this.Results.Add(AnalyzeMapOnEnter(map));
         }
 
         public void ActOnEnter(InputAction action)
         {
-            this.userGUI.AnalysisDisplay.Add(AnalyzeActionOnEnter(action));
+            this.Results.Add(AnalyzeActionOnEnter(action));
         }
 
         public void Act(InputBinding b)
@@ -171,12 +169,12 @@ namespace InputRebinder
 
         public void ActOnExit(InputActionMap map)
         {
-            this.userGUI.AnalysisDisplay.Add(AnalyzeMapOnExit(map));
+            this.Results.Add(AnalyzeMapOnExit(map));
         }
 
         public void ActOnExit(InputAction action)
         {
-            this.userGUI.AnalysisDisplay.Add(AnalyzeActionOnExit(action));
+            this.Results.Add(AnalyzeActionOnExit(action));
         }
 
         #endregion

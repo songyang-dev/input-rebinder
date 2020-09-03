@@ -46,9 +46,7 @@ namespace Tests
         [SetUp]
         public void GetParser()
         {
-            UserGUI.ShowWindow();
-            window = UserGUI.window;
-            parser = new Parser(new Analysis(window));
+            parser = new Parser(new Analysis());
         }
     }
 }
