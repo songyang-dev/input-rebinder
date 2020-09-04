@@ -2,7 +2,8 @@
     "name": "Unity.com.songyang.inputrebinder.Editor",
     "references": [
         "Unity.InputSystem",
-        "Unity.com.songyang.inputrebinder"
+        "Unity.com.songyang.inputrebinder",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [
         "Editor"

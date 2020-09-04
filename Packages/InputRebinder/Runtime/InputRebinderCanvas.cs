@@ -10,6 +10,10 @@ namespace InputRebinder.Runtime
     [RequireComponent(typeof(Canvas))]
     public class InputRebinderCanvas : MonoBehaviour
     {
-        
+        /// <summary>
+        /// Gameobject with the version number and name
+        /// </summary>
+        [Tooltip("Text with the version number and name")]
+        public TMPro.TextMeshProUGUI PluginVersion;
     }
 }

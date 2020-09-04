@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82e672ad0c701f643bfbd1e2e24ddb23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PluginVersion: {fileID: 6304469049143209134}
 --- !u!1 &6304469049143209132
 GameObject:
   m_ObjectHideFlags: 0
@@ -560,7 +561,7 @@ PrefabInstance:
     - target: {fileID: 8983066198093521515, guid: 3a84ab622615b7b42917e2df604cd2fb,
         type: 3}
       propertyPath: m_Value
-      value: 1.0000441
+      value: 17.240582
       objectReference: {fileID: 0}
     - target: {fileID: 8983066198093521515, guid: 3a84ab622615b7b42917e2df604cd2fb,
         type: 3}
@@ -570,6 +571,11 @@ PrefabInstance:
     - target: {fileID: 8983066198147302297, guid: 3a84ab622615b7b42917e2df604cd2fb,
         type: 3}
       propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8983066198147302297, guid: 3a84ab622615b7b42917e2df604cd2fb,
+        type: 3}
+      propertyPath: m_Value
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8983066198281407993, guid: 3a84ab622615b7b42917e2df604cd2fb,
@@ -597,6 +603,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8983066198316305849, guid: 3a84ab622615b7b42917e2df604cd2fb,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8983066198450786656, guid: 3a84ab622615b7b42917e2df604cd2fb,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -606,6 +617,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8983066198450786656, guid: 3a84ab622615b7b42917e2df604cd2fb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.00022287284
+      objectReference: {fileID: 0}
+    - target: {fileID: 8983066198450786656, guid: 3a84ab622615b7b42917e2df604cd2fb,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -22.456177
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a84ab622615b7b42917e2df604cd2fb, type: 3}

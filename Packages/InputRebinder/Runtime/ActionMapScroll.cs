@@ -12,6 +12,13 @@ namespace InputRebinder.Runtime
     public class ActionMapScroll : MonoBehaviour
     {
         /// <summary>
+        /// Content container for the buttons,
+        /// simply add buttons as children thanks to the horizontal layout group
+        /// </summary>
+        [Tooltip("Container of buttons")]
+        public GameObject ButtonContainer;
+
+        /// <summary>
         /// Displays the action map on the screen
         /// </summary>
         /// <param name="map"></param>

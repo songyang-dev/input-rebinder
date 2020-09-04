@@ -16,9 +16,12 @@ namespace InputRebinder.Runtime
         [SerializeField]
         private TextMeshProUGUI _text = default;
 
+        /// <summary>
+        /// Reference to the scroll view component for managing all map buttons
+        /// </summary>
         [Tooltip("Reference to the scroll view component for managing all map buttons")]
         [SerializeField]
-        private ActionMapScroll scrollView = default;
+        public ActionMapScroll scrollView;
 
         /// <summary>
         /// Text of the button, usually the name of the action map

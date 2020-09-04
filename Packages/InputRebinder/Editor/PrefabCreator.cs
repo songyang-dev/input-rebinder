@@ -23,16 +23,29 @@ namespace InputRebinder
         /// </summary>
         private Scene previewScene;
 
+        #region Generation prefab instance objects
         /// <summary>
-        /// Generation template prefab instance
+        /// Generation template prefab instance, will become a prefab variant
         /// </summary>
-        private GameObject generationTemplate;
+        private GameObject generatedPrefab;
 
         /// <summary>
-        /// Input Rebinder Canvas prefab instance
+        /// Input Rebinder Canvas script, located at the prefab root
         /// </summary>
-        private GameObject canvas;
-        
+        private InputRebinderCanvas canvas;
+
+        /// <summary>
+        /// Scroll view of the action map buttons
+        /// </summary>
+        private ActionMapScroll scrollView;
+
+        /// <summary>
+        /// A map button script attached to an asset loaded from disk,
+        /// not instantiated yet
+        /// </summary>
+        private ActionMapButton mapButton;
+        #endregion
+
         /// <summary>
         /// Path to the folder of the new prefab asset
         /// </summary>
@@ -44,14 +57,14 @@ namespace InputRebinder
         private readonly string newPrefabName;
 
         /// <summary>
-        /// Path to the input rebinder canvas prefab in the package
-        /// </summary>
-        private const string pathToCanvasPrefab = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Canvas.prefab";
-        
-        /// <summary>
         /// Path to the generation template prefab
         /// </summary>
-        private const string pathToGenerationTemplate = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder.prefab";
+        private const string pathToGenerationTemplate = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Template.prefab";
+
+        /// <summary>
+        /// Path to the action map button prefab
+        /// </summary>
+        private const string pathToActionMapButton = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Map Button.prefab";
 
         /// <summary>
         /// Creates an instance of this class
@@ -70,13 +83,6 @@ namespace InputRebinder
 
             // load prefabs
             LoadPrefabs();
-
-            // create a new prefab by using a template
-            // set up the generation in an isolated scene
-            // then copy the generated prefab to the user's given location
-
-            PrefabSetUp();
-            PrefabSaveAndCleanUp();
         }
 
         /// <summary>
@@ -86,31 +92,34 @@ namespace InputRebinder
         private void PrefabSaveAndCleanUp()
         {
             // save prefab and clean up the editing environment
+            var newPrefab = $"{this.newPrefabFolder}/{this.newPrefabName}.prefab";
             bool success;
-            PrefabUtility.SaveAsPrefabAsset(this.generationTemplate, $"{this.newPrefabFolder}/{this.newPrefabName}.prefab", out success);
-            EditorSceneManager.ClosePreviewScene(previewScene);
-
+            PrefabUtility.SaveAsPrefabAsset(this.generatedPrefab, newPrefab, out success);
             if (!success) throw new Exception($"New prefab did not generate at {this.newPrefabFolder}");
+
+            EditorSceneManager.ClosePreviewScene(previewScene);
         }
 
         /// <summary>
-        /// Creates a preview scene and instantiates the template prefab there
+        /// Prepares the prefabs for editing
         /// </summary>
-        private void PrefabSetUp()
-        {
-            // set up prefab editing environment
-            this.previewScene = EditorSceneManager.NewPreviewScene();
-            this.generationTemplate = (GameObject)PrefabUtility.InstantiatePrefab(generationTemplate, previewScene);
-        }
-
         private void LoadPrefabs()
         {
+            this.previewScene = EditorSceneManager.NewPreviewScene();
+
             // generation template
-            this.generationTemplate = AssetDatabase.LoadAssetAtPath<GameObject>(pathToGenerationTemplate);
+            var rootGameObject = AssetDatabase.LoadMainAssetAtPath(pathToGenerationTemplate);
+            this.generatedPrefab = (GameObject)PrefabUtility.InstantiatePrefab(rootGameObject, previewScene);
 
             // canvas
-            this.canvas = AssetDatabase.LoadAssetAtPath<GameObject>(pathToCanvasPrefab);
-            
+            this.canvas = this.generatedPrefab.GetComponentInChildren<InputRebinderCanvas>();
+
+            // scroll view
+            this.scrollView = this.generatedPrefab.GetComponentInChildren<ActionMapScroll>();
+
+            // map button
+            this.mapButton = AssetDatabase.LoadAssetAtPath<GameObject>(pathToActionMapButton)
+                .GetComponent<ActionMapButton>();
         }
 
         /// <summary>
@@ -132,7 +141,8 @@ namespace InputRebinder
             foreach (var dir in directories)
             {
                 // assume the Assets folder is created
-                if (skipFirst) {
+                if (skipFirst)
+                {
                     skipFirst = false;
                     continue;
                 }
@@ -149,14 +159,42 @@ namespace InputRebinder
             }
         }
 
+        /// <summary>
+        /// Sets the version number of the package on the generated prefab
+        /// </summary>
+        /// <param name="asset"></param>
         public void ActOnEnter(InputActionAsset asset)
         {
-            //throw new NotImplementedException();
+            var info = UnityEditor.PackageManager.PackageInfo
+                .FindForAssetPath(pathToGenerationTemplate);
+            var display = $"{info.displayName} {info.version}";
+
+            this.canvas.GetComponent<InputRebinderCanvas>()
+                .PluginVersion
+                .text
+                = display;
         }
 
+        /// <summary>
+        /// Adds the map buttons to the scroll view
+        /// </summary>
+        /// <param name="map"></param>
         public void ActOnEnter(InputActionMap map)
         {
-            //throw new NotImplementedException();
+            var mapCount = map.asset.actionMaps.Count;
+            if (mapCount <= 0) return;
+
+            var newButton = PrefabUtility.InstantiatePrefab(this.mapButton.gameObject,
+                this.scrollView.ButtonContainer.transform)
+                as GameObject;
+
+            // set names
+            newButton.name = map.name;
+            ActionMapButton actionMapButton = newButton.GetComponent<ActionMapButton>();
+            actionMapButton.ButtonText = map.name;
+
+            // set scrollview
+            actionMapButton.scrollView = this.scrollView;
         }
 
         public void ActOnEnter(InputAction action)
@@ -171,7 +209,7 @@ namespace InputRebinder
 
         public void ActOnExit(InputActionAsset asset)
         {
-            //throw new NotImplementedException();
+            PrefabSaveAndCleanUp();
         }
 
         public void ActOnExit(InputActionMap map)
