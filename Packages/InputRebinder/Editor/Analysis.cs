@@ -22,7 +22,7 @@ namespace InputRebinder
         /// <typeparam name="InputActionMap">Action map from Unity</typeparam>
         /// <typeparam name="bool">Whether to generate the prefab for this map</typeparam>
         /// <returns>Whether to generate the prefab for this map</returns>
-        private Dictionary<InputActionMap, bool> maps = new Dictionary<InputActionMap, bool>();
+        internal Dictionary<InputActionMap, bool> maps = new Dictionary<InputActionMap, bool>();
 
         /// <summary>
         /// Generation options relating to actions
@@ -30,7 +30,7 @@ namespace InputRebinder
         /// <typeparam name="InputAction">Action from Unity</typeparam>
         /// <typeparam name="bool">Whether to generate</typeparam>
         /// <returns>Whether to generate</returns>
-        private Dictionary<InputAction, bool> actions = new Dictionary<InputAction, bool>();
+        internal Dictionary<InputAction, bool> actions = new Dictionary<InputAction, bool>();
 
         #endregion
 
@@ -145,18 +145,21 @@ namespace InputRebinder
         };
 
         #region Interface implementation
-        public void ActOnEnter(InputActionAsset asset)
+        public bool ActOnEnter(InputActionAsset asset)
         {
+            return true;
         }
 
-        public void ActOnEnter(InputActionMap map)
+        public bool ActOnEnter(InputActionMap map)
         {
             this.Results.Add(AnalyzeMapOnEnter(map));
+            return true;
         }
 
-        public void ActOnEnter(InputAction action)
+        public bool ActOnEnter(InputAction action)
         {
             this.Results.Add(AnalyzeActionOnEnter(action));
+            return true;
         }
 
         public void Act(InputBinding b)

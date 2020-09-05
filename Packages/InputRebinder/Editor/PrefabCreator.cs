@@ -40,10 +40,22 @@ namespace InputRebinder
         private ActionMapScroll scrollView;
 
         /// <summary>
-        /// A map button script attached to an asset loaded from disk,
+        /// A map button script attached to a prefab loaded from disk,
         /// not instantiated yet
         /// </summary>
         private ActionMapButton mapButton;
+
+        /// <summary>
+        /// Scrollview for displaying map contents
+        /// </summary>
+        private ActionMapDisplayScroll mapDisplayScroll;
+
+        /// <summary>
+        /// A map content script attached to a prefab loaded from disk,
+        /// not instantiated yet
+        /// </summary>
+        private ActionMapContent mapContent;
+
         #endregion
 
         /// <summary>
@@ -65,6 +77,11 @@ namespace InputRebinder
         /// Path to the action map button prefab
         /// </summary>
         private const string pathToActionMapButton = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Map Button.prefab";
+
+        /// <summary>
+        /// Path to the action map content prefab
+        /// </summary>
+        private const string pathToActionMapContent = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Map Content.prefab";
 
         /// <summary>
         /// Creates an instance of this class
@@ -120,6 +137,13 @@ namespace InputRebinder
             // map button
             this.mapButton = AssetDatabase.LoadAssetAtPath<GameObject>(pathToActionMapButton)
                 .GetComponent<ActionMapButton>();
+
+            // map display scroll
+            this.mapDisplayScroll = this.generatedPrefab.GetComponentInChildren<ActionMapDisplayScroll>();
+
+            // map content prefab
+            this.mapContent = AssetDatabase.LoadAssetAtPath<GameObject>(pathToActionMapContent)
+                .GetComponent<ActionMapContent>();
         }
 
         /// <summary>
@@ -163,7 +187,7 @@ namespace InputRebinder
         /// Sets the version number of the package on the generated prefab
         /// </summary>
         /// <param name="asset"></param>
-        public void ActOnEnter(InputActionAsset asset)
+        public bool ActOnEnter(InputActionAsset asset)
         {
             var info = UnityEditor.PackageManager.PackageInfo
                 .FindForAssetPath(pathToGenerationTemplate);
@@ -173,16 +197,55 @@ namespace InputRebinder
                 .PluginVersion
                 .text
                 = display;
+
+            return true;
         }
 
         /// <summary>
         /// Adds the map buttons to the scroll view
+        /// and create a map display content
         /// </summary>
         /// <param name="map"></param>
-        public void ActOnEnter(InputActionMap map)
+        public bool ActOnEnter(InputActionMap map)
         {
+            if (AddMapButton(map) == false) return false;
+
+            // Create a map display content for the larger scroll view
+
+            var mapContentInstance = (PrefabUtility.InstantiatePrefab(
+                this.mapContent.gameObject,
+                this.mapDisplayScroll.viewport.transform.GetChild(0))
+                as GameObject)
+                .GetComponent<ActionMapContent>();
+            AssignMapContent(map, mapContentInstance);
+
+
+            return true;
+        }
+
+        /// <summary>
+        /// Sets the map content prefab instance to respond to the correct map button
+        /// </summary>
+        /// <param name="map"></param>
+        /// <param name="mapContent"></param>
+        private void AssignMapContent(InputActionMap map, ActionMapContent mapContent)
+        {
+            mapContent.Map = map;
+            mapContent.name = map.name;
+        }
+
+        /// <summary>
+        /// Makes a map button on the scroll view
+        /// </summary>
+        /// <param name="map"></param>
+        /// <returns>False means parsing must be interrupted</returns>
+        private bool AddMapButton(InputActionMap map)
+        {
+            // ignore map if the analysis says so
+            if (!this.analysis.maps[map]) return false;
+
             var mapCount = map.asset.actionMaps.Count;
-            if (mapCount <= 0) return;
+            if (mapCount <= 0) return false;
 
             var newButton = PrefabUtility.InstantiatePrefab(this.mapButton.gameObject,
                 this.scrollView.ButtonContainer.transform)
@@ -195,11 +258,12 @@ namespace InputRebinder
 
             // set scrollview
             actionMapButton.scrollView = this.scrollView;
+            return true;
         }
 
-        public void ActOnEnter(InputAction action)
+        public bool ActOnEnter(InputAction action)
         {
-            //throw new NotImplementedException();
+            return true;
         }
 
         public void Act(InputBinding b)

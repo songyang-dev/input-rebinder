@@ -18,21 +18,24 @@ namespace InputRebinder
         /// In generate mode, does nothing.
         /// </summary>
         /// <param name="asset"></param>
-        void ActOnEnter(InputActionAsset asset);
+        /// <returns>Whether to continue parsing or not</returns>
+        bool ActOnEnter(InputActionAsset asset);
 
         /// <summary>
         /// In analyze mode, present the map to the GUI.
         /// In generate mode, execute the prefab creator for action maps.
         /// </summary>
         /// <param name="map"></param>
-        void ActOnEnter(InputActionMap map);
+        /// <returns>Whether to continue parsing or not</returns>
+        bool ActOnEnter(InputActionMap map);
 
         /// <summary>
         /// In analyze mode, present the action to the GUI.
         /// In generate mode, execute the prefab creator for actions.
         /// </summary>
         /// <param name="action"></param>
-        void ActOnEnter(InputAction action);
+        /// <returns>Whether to continue parsing or not</returns>
+        bool ActOnEnter(InputAction action);
 
         /// <summary>
         /// In analyze mode, ask what kind of bindings should be excluded.

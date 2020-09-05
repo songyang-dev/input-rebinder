@@ -61,7 +61,7 @@ namespace InputRebinder
         internal void Parse(InputActionAsset asset)
         {
             // parsing actions: enter
-            parsingAction.ActOnEnter(asset);
+            if (!parsingAction.ActOnEnter(asset)) return;
 
             var maps = asset.actionMaps;
 
@@ -82,7 +82,7 @@ namespace InputRebinder
         private void Parse(InputActionMap map)
         {
             // parsing actions
-            parsingAction.ActOnEnter(map);
+            if (!parsingAction.ActOnEnter(map)) return;
 
             var actions = map.actions;
 
@@ -101,7 +101,7 @@ namespace InputRebinder
         private void Parse(InputAction action)
         {
             // parsing actions
-            parsingAction.ActOnEnter(action);
+            if (!parsingAction.ActOnEnter(action)) return;
 
             foreach (var b in action.bindings)
             {
