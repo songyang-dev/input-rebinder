@@ -19,12 +19,18 @@ namespace InputRebinder.Runtime
         public GameObject ButtonContainer;
 
         /// <summary>
+        /// Scroll view for the display of map contents
+        /// </summary>
+        [Tooltip("Scroll view for the display of map contents")]
+        public ActionMapDisplayScroll contentScrollview;
+
+        /// <summary>
         /// Displays the action map on the screen
         /// </summary>
         /// <param name="map"></param>
         public void ShowMap(ActionMapButton map)
         {
-
+            contentScrollview.SetActiveMap(map.Map);
         }
     }
 }

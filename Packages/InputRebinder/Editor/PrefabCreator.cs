@@ -56,6 +56,12 @@ namespace InputRebinder
         /// </summary>
         private ActionMapContent mapContent;
 
+        /// <summary>
+        /// Default map content instantiated by default on the template,
+        /// must be deactivated when more map contents are added
+        /// </summary>
+        private ActionMapContent defaultMapContent;
+
         #endregion
 
         /// <summary>
@@ -140,10 +146,14 @@ namespace InputRebinder
 
             // map display scroll
             this.mapDisplayScroll = this.generatedPrefab.GetComponentInChildren<ActionMapDisplayScroll>();
+            this.mapDisplayScroll.Contents.Clear();
 
-            // map content prefab
-            this.mapContent = AssetDatabase.LoadAssetAtPath<GameObject>(pathToActionMapContent)
-                .GetComponent<ActionMapContent>();
+            // map content prefab from disk
+            this.mapContent = 
+                AssetDatabase.LoadAssetAtPath<GameObject>(pathToActionMapContent).GetComponent<ActionMapContent>();
+
+            // map content prefab instance there by default
+            this.defaultMapContent = this.generatedPrefab.GetComponentInChildren<ActionMapContent>();
         }
 
         /// <summary>
@@ -214,24 +224,29 @@ namespace InputRebinder
 
             var mapContentInstance = (PrefabUtility.InstantiatePrefab(
                 this.mapContent.gameObject,
-                this.mapDisplayScroll.viewport.transform.GetChild(0))
+                this.mapDisplayScroll.Viewport.transform)
                 as GameObject)
                 .GetComponent<ActionMapContent>();
+            
             AssignMapContent(map, mapContentInstance);
-
 
             return true;
         }
 
         /// <summary>
-        /// Sets the map content prefab instance to respond to the correct map button
+        /// Sets the map content prefab instance to respond 
+        /// to the correct map button
         /// </summary>
         /// <param name="map"></param>
         /// <param name="mapContent"></param>
         private void AssignMapContent(InputActionMap map, ActionMapContent mapContent)
         {
+            // set data on the map content script and object
             mapContent.Map = map;
             mapContent.name = map.name;
+
+            // add the map content to the list of contents on the display scrollview script
+            this.mapDisplayScroll.Contents.Add(mapContent);
         }
 
         /// <summary>
@@ -258,9 +273,18 @@ namespace InputRebinder
 
             // set scrollview
             actionMapButton.scrollView = this.scrollView;
+
+            // set map
+            actionMapButton.Map = map;
+
             return true;
         }
 
+        /// <summary>
+        /// Makes a section in the map display screen for this action
+        /// </summary>
+        /// <param name="action"></param>
+        /// <returns></returns>
         public bool ActOnEnter(InputAction action)
         {
             return true;
@@ -273,12 +297,17 @@ namespace InputRebinder
 
         public void ActOnExit(InputActionAsset asset)
         {
+            // activate one map content only
+            this.mapDisplayScroll.ActivateFirstMapContent();
+
+            // saving
             PrefabSaveAndCleanUp();
         }
 
         public void ActOnExit(InputActionMap map)
         {
-            //throw new NotImplementedException();
+            // disable the default map content in the prefab
+            this.defaultMapContent.gameObject.SetActive(false);
         }
 
         public void ActOnExit(InputAction action)

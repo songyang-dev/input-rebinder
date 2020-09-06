@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using TMPro;
 
 namespace InputRebinder.Runtime
@@ -22,6 +23,12 @@ namespace InputRebinder.Runtime
         [Tooltip("Reference to the scroll view component for managing all map buttons")]
         [SerializeField]
         public ActionMapScroll scrollView;
+
+        /// <summary>
+        /// Reference to the input system map the button represents
+        /// </summary>
+        [HideInInspector]
+        public InputActionMap Map;
 
         /// <summary>
         /// Text of the button, usually the name of the action map

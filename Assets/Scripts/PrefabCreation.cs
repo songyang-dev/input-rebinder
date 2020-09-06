@@ -8,7 +8,7 @@ public class PrefabCreation : Editor
 {
     private const string AssetPath = "Assets/Prefabs/Main Camera.prefab";
 
-    [MenuItem("Test/Test")]
+    [MenuItem("Test/Prefab variant test")]
     static void Main()
     {
         var modelRootGO = (GameObject)AssetDatabase.LoadMainAssetAtPath(AssetPath);
