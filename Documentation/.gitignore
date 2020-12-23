@@ -1,0 +1,11 @@
+# Documentation gitignore
+
+# generation targets
+_site/
+api/
+
+# cache
+obj/
+
+# resources
+resources/
