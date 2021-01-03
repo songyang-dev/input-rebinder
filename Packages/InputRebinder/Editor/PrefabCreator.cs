@@ -9,7 +9,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
 
-namespace InputRebinder
+namespace InputRebinder.Editor
 {
     internal class PrefabCreator : IParsingAction
     {

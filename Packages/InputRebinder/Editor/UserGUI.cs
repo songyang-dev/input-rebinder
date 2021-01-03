@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 /// <summary>
 /// Namespace for the input rebinder plugin
 /// </summary>
-namespace InputRebinder
+namespace InputRebinder.Editor
 {
 
     /// <summary>

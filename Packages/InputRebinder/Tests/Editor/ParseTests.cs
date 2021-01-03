@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.TestTools;
 using UnityEngine.InputSystem;
-using InputRebinder;
+using InputRebinder.Editor;
 
 namespace Tests
 {

@@ -8,6 +8,7 @@
                 }
             ],
             "globalNamespaceId": "Global",
+	    "disableDefaultFilter": true,
             "filter": "filterConfig.yml",
             "dest": "api"
         }

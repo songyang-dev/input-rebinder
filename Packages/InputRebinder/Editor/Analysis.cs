@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using System;
 
-namespace InputRebinder
+namespace InputRebinder.Editor
 {
 
     /// <summary>

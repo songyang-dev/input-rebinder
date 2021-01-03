@@ -1,5 +1,5 @@
 {
-    "name": "Unity.com.songyang.inputrebinder",
+    "name": "Unity.com.songyang.InputRebinder.Runtime",
     "references": [
         "Unity.TextMeshPro",
         "Unity.InputSystem"

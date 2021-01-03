@@ -1,6 +1,6 @@
 apiRules:
 - include:
-    uidRegex: ^DocFxForUnity
+    uidRegex: ^InputRebinder.*
     type: Namespace
 - include:
     uidRegex: ^Global

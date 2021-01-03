@@ -8,7 +8,7 @@ using System;
 /// <summary>
 /// Contains editor code for generating the prefabs from an inputaction file
 /// </summary>
-namespace InputRebinder
+namespace InputRebinder.Editor
 {
 
     /// <summary>

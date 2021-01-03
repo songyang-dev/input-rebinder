@@ -5,45 +5,48 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(ScrollRect))]
-public class ActionMapDisplayScroll : MonoBehaviour
+namespace InputRebinder.Runtime
 {
-    /// <summary>
-    /// Reference to the viewport
-    /// </summary>
-    [Tooltip("Reference to the viewport")]
-    public GameObject Viewport;
-
-    /// <summary>
-    /// List of contents display in the scrollview
-    /// </summary>
-    [HideInInspector]
-    public List<ActionMapContent> Contents = new List<ActionMapContent>();
-
-    /// <summary>
-    /// Displays the content for the given map and hides all other maps
-    /// </summary>
-    /// <param name="mapContent"></param>
-    public void SetActiveMap(InputActionMap map)
+    [RequireComponent(typeof(ScrollRect))]
+    public class ActionMapDisplayScroll : MonoBehaviour
     {
-        foreach (var mapContent in Contents)
+        /// <summary>
+        /// Reference to the viewport
+        /// </summary>
+        [Tooltip("Reference to the viewport")]
+        public GameObject Viewport;
+
+        /// <summary>
+        /// List of contents display in the scrollview
+        /// </summary>
+        [HideInInspector]
+        public List<ActionMapContent> Contents = new List<ActionMapContent>();
+
+        /// <summary>
+        /// Displays the content for the given map and hides all other maps
+        /// </summary>
+        /// <param name="mapContent"></param>
+        public void SetActiveMap(InputActionMap map)
         {
-            if (mapContent.Map.id == map.id)
+            foreach (var mapContent in Contents)
             {
-                mapContent.gameObject.SetActive(true);
-                GetComponent<ScrollRect>().content = mapContent.GetComponent<RectTransform>();
+                if (mapContent.Map.id == map.id)
+                {
+                    mapContent.gameObject.SetActive(true);
+                    GetComponent<ScrollRect>().content = mapContent.GetComponent<RectTransform>();
+                }
+                else mapContent.gameObject.SetActive(false);
             }
-            else mapContent.gameObject.SetActive(false);
         }
-    }
 
-    /// <summary>
-    /// Displays the first map,
-    /// used after generating the prefab
-    /// </summary>
-    public void ActivateFirstMapContent()
-    {
-        if (Contents.Count != 0)
-            SetActiveMap(Contents[0].Map);
+        /// <summary>
+        /// Displays the first map,
+        /// used after generating the prefab
+        /// </summary>
+        public void ActivateFirstMapContent()
+        {
+            if (Contents.Count != 0)
+                SetActiveMap(Contents[0].Map);
+        }
     }
 }

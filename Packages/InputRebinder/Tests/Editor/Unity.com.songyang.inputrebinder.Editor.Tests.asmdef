@@ -1,10 +1,10 @@
 {
-    "name": "Unity.com.songyang.inputrebinder.Editor.Tests",
+    "name": "Unity.com.songyang.InputRebinder.Editor.Tests",
     "references": [
-        "Unity.com.songyang.inputrebinder.Editor",
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.com.songyang.InputRebinder.Editor"
     ],
     "includePlatforms": [
         "Editor"
