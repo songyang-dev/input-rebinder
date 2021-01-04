@@ -32,6 +32,11 @@
                 "src": "manual",
                 "files": [ "toc.yml", "*.md" ],
                 "dest": "manual"
+            },
+            {
+                "src": "specs",
+                "files": [ "*.yml", "*.md"],
+                "dest": "specs"
             }
         ],
         "overwrite": [
