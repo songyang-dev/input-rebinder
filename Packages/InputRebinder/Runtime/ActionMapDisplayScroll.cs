@@ -23,6 +23,24 @@ namespace InputRebinder.Runtime
         public List<ActionMapContent> Contents = new List<ActionMapContent>();
 
         /// <summary>
+        /// Finds the action map content component of a input action map in this
+        /// scrollview
+        /// </summary>
+        /// <param name="map">Input system map to look for</param>
+        /// <returns>Associated ActionMapContent</returns>
+        public ActionMapContent GetActionMapContent(InputActionMap map)
+        {
+            foreach (var mapContent in Contents)
+            {
+                if (mapContent.Map.id == map.id)
+                {
+                    return mapContent;
+                }
+            }
+            throw new ArgumentException($"Map content not found: {map.name}");
+        }
+
+        /// <summary>
         /// Displays the content for the given map and hides all other maps
         /// </summary>
         /// <param name="mapContent"></param>

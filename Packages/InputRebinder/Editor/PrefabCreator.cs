@@ -62,6 +62,11 @@ namespace InputRebinder.Editor
         /// </summary>
         private ActionMapContent defaultMapContent;
 
+        /// <summary>
+        /// Component of the input rebinder's action prefab
+        /// </summary>
+        private InputRebinderAction inputRebinderAction;
+
         #endregion
 
         /// <summary>
@@ -88,6 +93,11 @@ namespace InputRebinder.Editor
         /// Path to the action map content prefab
         /// </summary>
         private const string pathToActionMapContent = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Map Content.prefab";
+
+        /// <summary>
+        /// Path to the action prefab
+        /// </summary>
+        private const string pathToAction = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Action.prefab";
 
         /// <summary>
         /// Creates an instance of this class
@@ -152,8 +162,12 @@ namespace InputRebinder.Editor
             this.mapContent = 
                 AssetDatabase.LoadAssetAtPath<GameObject>(pathToActionMapContent).GetComponent<ActionMapContent>();
 
-            // map content prefab instance there by default
+            // map content prefab instance in the template by default
             this.defaultMapContent = this.generatedPrefab.GetComponentInChildren<ActionMapContent>();
+
+            // input rebinder action prefab from disk
+            this.inputRebinderAction = AssetDatabase.LoadAssetAtPath<GameObject>(pathToAction)
+                .GetComponent<InputRebinderAction>();
         }
 
         /// <summary>
@@ -287,6 +301,18 @@ namespace InputRebinder.Editor
         /// <returns></returns>
         public bool ActOnEnter(InputAction action)
         {
+            // skip if not meant to generate
+            if (this.analysis.actions[action] == false) return false;
+
+            var actionInstance = (PrefabUtility.InstantiatePrefab(
+                this.inputRebinderAction.gameObject,
+                this.mapDisplayScroll.GetActionMapContent(action.actionMap).gameObject.transform)
+                as GameObject)
+                .GetComponent<InputRebinderAction>();
+            
+            // set the input rebinder action
+            actionInstance.ActionName.text = action.name;
+            
             return true;
         }
 

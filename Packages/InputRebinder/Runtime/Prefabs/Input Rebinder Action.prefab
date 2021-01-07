@@ -648,6 +648,7 @@ GameObject:
   - component: {fileID: 5572431702664616803}
   - component: {fileID: 1706400562221112858}
   - component: {fileID: 6486811961556316716}
+  - component: {fileID: -5049551072383445262}
   m_Layer: 5
   m_Name: Input Rebinder Action
   m_TagString: Untagged
@@ -715,6 +716,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &-5049551072383445262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8839700208956707617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3db2a097a34ef47b0ff71d4fd1bcbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionName: {fileID: 7665767638119913425}
+  CurrentBinding: {fileID: 5341174268863686140}
 --- !u!1 &9181366289470226166
 GameObject:
   m_ObjectHideFlags: 0
