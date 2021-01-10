@@ -4,6 +4,8 @@ using System.Collections;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using System;
+using UnityEngine.UI;
+using InputRebinder.Runtime;
 
 using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Unity.com.songyang.inputrebinder.Editor.Tests")]

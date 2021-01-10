@@ -58,8 +58,7 @@ namespace InputRebinder.Runtime
         }
 
         /// <summary>
-        /// Displays the first map,
-        /// used after generating the prefab
+        /// Displays the first map, used after generating the prefab
         /// </summary>
         public void ActivateFirstMapContent()
         {

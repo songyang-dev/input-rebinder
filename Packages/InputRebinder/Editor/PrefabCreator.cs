@@ -8,6 +8,7 @@ using System.Text;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace InputRebinder.Editor
 {
@@ -66,6 +67,11 @@ namespace InputRebinder.Editor
         /// Component of the input rebinder's action prefab
         /// </summary>
         private InputRebinderAction inputRebinderAction;
+        
+        /// <summary>
+        /// Component of the input rebinder's binding prefab
+        /// </summary>
+        private InputRebinderBinding inputRebinderBinding;
 
         #endregion
 
@@ -98,6 +104,11 @@ namespace InputRebinder.Editor
         /// Path to the action prefab
         /// </summary>
         private const string pathToAction = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Action.prefab";
+
+        /// <summary>
+        /// Path to the binding prefab
+        /// </summary>
+        private const string pathToBinding = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Binding.prefab";
 
         /// <summary>
         /// Creates an instance of this class
@@ -168,6 +179,10 @@ namespace InputRebinder.Editor
             // input rebinder action prefab from disk
             this.inputRebinderAction = AssetDatabase.LoadAssetAtPath<GameObject>(pathToAction)
                 .GetComponent<InputRebinderAction>();
+
+            // input rebinder binding prefab from disk
+            this.inputRebinderBinding = AssetDatabase.LoadAssetAtPath<GameObject>(pathToBinding)
+                .GetComponent<InputRebinderBinding>();
         }
 
         /// <summary>
@@ -304,21 +319,54 @@ namespace InputRebinder.Editor
             // skip if not meant to generate
             if (this.analysis.actions[action] == false) return false;
 
+            ActionMapContent actionMapContent = this.mapDisplayScroll.
+                GetActionMapContent(action.actionMap);
+
             var actionInstance = (PrefabUtility.InstantiatePrefab(
-                this.inputRebinderAction.gameObject,
-                this.mapDisplayScroll.GetActionMapContent(action.actionMap).gameObject.transform)
+                inputRebinderAction.gameObject,
+                actionMapContent.gameObject.transform)
                 as GameObject)
                 .GetComponent<InputRebinderAction>();
             
             // set the input rebinder action
             actionInstance.ActionName.text = action.name;
+            actionInstance.Action = action;
+
+            // add action to the map content
+            actionMapContent.Actions.Add(actionInstance);
             
             return true;
         }
 
-        public void Act(InputBinding b)
+        /// <summary>
+        /// Processes the binding
+        /// </summary>
+        /// <param name="binding"></param>
+        /// <param name="action"></param>
+        public void Act(InputBinding binding, InputAction action)
         {
-            //throw new NotImplementedException();
+            // ignore composite actions for now
+            if (binding.isComposite) return;
+
+            // get the input rebinder action, used to instantiate the binding prefab's location
+            var relatedInputRebinderAction =
+                this.mapDisplayScroll.GetActionMapContent(action.actionMap)
+                .GetInputRebinderAction(action)
+            ;
+
+            var bindingInstance = (PrefabUtility.InstantiatePrefab(
+                this.inputRebinderBinding.gameObject,
+                relatedInputRebinderAction.BindingsEmpty.transform
+            ) as GameObject).GetComponent<InputRebinderBinding>();
+
+            // link up the binding to the action
+            relatedInputRebinderAction.InputRebinderBindings.Add(bindingInstance);
+
+            // set the name
+            if (!binding.name.Equals(""))
+                bindingInstance.CurrentBindingText.text = binding.name;
+            else
+                bindingInstance.CurrentBindingText.text = binding.path;
         }
 
         public void ActOnExit(InputActionAsset asset)

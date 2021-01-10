@@ -42,7 +42,8 @@ namespace InputRebinder.Editor
         /// In generate mode, execute the prefab creator for bindings.
         /// </summary>
         /// <param name="b"></param>
-        void Act(InputBinding b);
+        /// <param name="action">Action the binding belongs to</param>
+        void Act(InputBinding b, InputAction action);
 
         void ActOnExit(InputActionAsset asset);
 

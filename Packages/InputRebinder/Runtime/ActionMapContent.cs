@@ -16,5 +16,24 @@ namespace InputRebinder.Runtime
         /// </summary>
         [HideInInspector]
         public InputActionMap Map;
+
+        /// <summary>
+        /// Input Rebinder Actions of this map
+        /// </summary>
+        [HideInInspector]
+        public List<InputRebinderAction> Actions;
+
+        public InputRebinderAction GetInputRebinderAction(InputAction action)
+        {
+            foreach (var a in Actions)
+            {
+                if (a.Action.id == action.id)
+                {
+                    return a;
+                }
+            }
+
+            throw new System.ArgumentException($"Input rebinder action not found: {action.name}");
+        }
     }
 }

@@ -105,7 +105,7 @@ namespace InputRebinder.Editor
 
             foreach (var b in action.bindings)
             {
-                Parse(b);
+                Parse(b, action);
             }
 
             parsingAction.ActOnExit(action);
@@ -115,9 +115,10 @@ namespace InputRebinder.Editor
         /// Parses the binding, which can be composite
         /// </summary>
         /// <param name="b"></param>
-        private void Parse(InputBinding b)
+        /// <param name="action"></param>
+        private void Parse(InputBinding b, InputAction action)
         {
-            parsingAction.Act(b);
+            parsingAction.Act(b, action);
         }
         #endregion
 

@@ -162,7 +162,7 @@ namespace InputRebinder.Editor
             return true;
         }
 
-        public void Act(InputBinding b)
+        public void Act(InputBinding b, InputAction action)
         {
         }
 
