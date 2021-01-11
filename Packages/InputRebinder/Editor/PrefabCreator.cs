@@ -67,11 +67,16 @@ namespace InputRebinder.Editor
         /// Component of the input rebinder's action prefab
         /// </summary>
         private InputRebinderAction inputRebinderAction;
-        
+
         /// <summary>
         /// Component of the input rebinder's binding prefab
         /// </summary>
         private InputRebinderBinding inputRebinderBinding;
+
+        /// <summary>
+        /// Component of the input rebinder's binding pair prefab
+        /// </summary>
+        private BindingPair bindingPair;
 
         #endregion
 
@@ -109,6 +114,11 @@ namespace InputRebinder.Editor
         /// Path to the binding prefab
         /// </summary>
         private const string pathToBinding = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Binding.prefab";
+
+        /// <summary>
+        /// Path to the binding pair prefab
+        /// </summary>
+        private const string pathToBindingPair = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Binding Pair.prefab";
 
         /// <summary>
         /// Creates an instance of this class
@@ -170,7 +180,7 @@ namespace InputRebinder.Editor
             this.mapDisplayScroll.Contents.Clear();
 
             // map content prefab from disk
-            this.mapContent = 
+            this.mapContent =
                 AssetDatabase.LoadAssetAtPath<GameObject>(pathToActionMapContent).GetComponent<ActionMapContent>();
 
             // map content prefab instance in the template by default
@@ -183,6 +193,10 @@ namespace InputRebinder.Editor
             // input rebinder binding prefab from disk
             this.inputRebinderBinding = AssetDatabase.LoadAssetAtPath<GameObject>(pathToBinding)
                 .GetComponent<InputRebinderBinding>();
+
+            // input rebinder binding pair prefab from disk
+            this.bindingPair = AssetDatabase.LoadAssetAtPath<GameObject>(pathToBindingPair)
+                .GetComponent<BindingPair>();
         }
 
         /// <summary>
@@ -256,7 +270,7 @@ namespace InputRebinder.Editor
                 this.mapDisplayScroll.Viewport.transform)
                 as GameObject)
                 .GetComponent<ActionMapContent>();
-            
+
             AssignMapContent(map, mapContentInstance);
 
             return true;
@@ -327,14 +341,17 @@ namespace InputRebinder.Editor
                 actionMapContent.gameObject.transform)
                 as GameObject)
                 .GetComponent<InputRebinderAction>();
-            
+
             // set the input rebinder action
             actionInstance.ActionName.text = action.name;
             actionInstance.Action = action;
 
             // add action to the map content
             actionMapContent.Actions.Add(actionInstance);
-            
+
+            // link map content to the action
+            actionInstance.BindingsParent = actionMapContent.gameObject;
+
             return true;
         }
 
@@ -349,24 +366,50 @@ namespace InputRebinder.Editor
             if (binding.isComposite) return;
 
             // get the input rebinder action, used to instantiate the binding prefab's location
-            var relatedInputRebinderAction =
+            var relatedAction =
                 this.mapDisplayScroll.GetActionMapContent(action.actionMap)
                 .GetInputRebinderAction(action)
             ;
 
+            // get the binding pair for presentation
+            // or make a new one
+            
+            // no pair yet
+            if (relatedAction.LastPair == null)
+                relatedAction.LastPair = CreatePair(relatedAction);
+            
+            // not enough space
+            if (relatedAction.LastPair.Count >= 2)
+            {
+                relatedAction.LastPair = CreatePair(relatedAction);
+            }
+
             var bindingInstance = (PrefabUtility.InstantiatePrefab(
                 this.inputRebinderBinding.gameObject,
-                relatedInputRebinderAction.BindingsEmpty.transform
+                relatedAction.LastPair.transform
             ) as GameObject).GetComponent<InputRebinderBinding>();
 
+            // increment pair's inner count
+            relatedAction.LastPair.Count++;
+
             // link up the binding to the action
-            relatedInputRebinderAction.InputRebinderBindings.Add(bindingInstance);
+            relatedAction.InputRebinderBindings.Add(bindingInstance);
 
             // set the name
             if (!binding.name.Equals(""))
                 bindingInstance.CurrentBindingText.text = binding.name;
             else
-                bindingInstance.CurrentBindingText.text = binding.path;
+            {
+                string[] vs = binding.path.Split('/');
+                bindingInstance.CurrentBindingText.text = vs[vs.Length - 1];
+            }
+        }
+
+        private BindingPair CreatePair(InputRebinderAction action)
+        {
+            return (PrefabUtility.InstantiatePrefab(this.bindingPair.gameObject,
+                    action.BindingsParent.transform
+            ) as GameObject).GetComponent<BindingPair>();
         }
 
         public void ActOnExit(InputActionAsset asset)

@@ -23,6 +23,12 @@ namespace InputRebinder.Runtime
         [HideInInspector]
         public List<InputRebinderAction> Actions;
 
+        /// <summary>
+        /// Input Rebinder Binding Pairs for better display
+        /// </summary>
+        [HideInInspector]
+        public List<GameObject> BindingPairs;
+
         public InputRebinderAction GetInputRebinderAction(InputAction action)
         {
             foreach (var a in Actions)

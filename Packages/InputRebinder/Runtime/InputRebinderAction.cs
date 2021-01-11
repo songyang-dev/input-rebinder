@@ -23,14 +23,20 @@ namespace InputRebinder.Runtime
         public TMPro.TextMeshProUGUI ActionName;
 
         /// <summary>
-        /// Reference to the empty holding the input rebinder bindings
+        /// Reference to the parent where bindings are added
         /// </summary>
-        public GameObject BindingsEmpty;
+        public GameObject BindingsParent;
 
         /// <summary>
         /// List of bindings for this action
         /// </summary>
         [HideInInspector]
         public List<InputRebinderBinding> InputRebinderBindings;
+
+        /// <summary>
+        /// The last pair is used to populate the window
+        /// </summary>
+        [HideInInspector]
+        public BindingPair LastPair;
     }
 }
