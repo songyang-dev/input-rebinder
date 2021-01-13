@@ -396,13 +396,12 @@ namespace InputRebinder.Editor
             relatedAction.InputRebinderBindings.Add(bindingInstance);
 
             // set the name
-            if (!binding.name.Equals(""))
-                bindingInstance.CurrentBindingText.text = binding.name;
-            else
-            {
-                string[] vs = binding.path.Split('/');
-                bindingInstance.CurrentBindingText.text = vs[vs.Length - 1];
-            }
+            bindingInstance.CurrentBindingText.text = 
+                InputControlPath.ToHumanReadableString(binding.effectivePath);
+
+            // add refs to the binding
+            bindingInstance.OriginalBinding = binding;
+            bindingInstance.Action = action;
         }
 
         private BindingPair CreatePair(InputRebinderAction action)

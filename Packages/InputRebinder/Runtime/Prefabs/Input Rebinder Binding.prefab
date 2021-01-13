@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 2646416478039480288}
   - component: {fileID: 1687434153174325565}
   - component: {fileID: 8924987429742582530}
+  - component: {fileID: 2470170089889747430}
+  - component: {fileID: 8430251632849058001}
   m_Layer: 0
   m_Name: Input Rebinder Binding
   m_TagString: Untagged
@@ -101,7 +103,53 @@ MonoBehaviour:
     m_Groups: 
     m_Action: 
     m_Flags: 0
+  Action:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
   CurrentBindingText: {fileID: 2087291157409836274}
+  ButtonText: {fileID: 4117516087186688112}
+--- !u!222 &2470170089889747430
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248731325264808493}
+  m_CullTransparentMesh: 0
+--- !u!114 &8430251632849058001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 248731325264808493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.29556784, g: 0.44331855, b: 0.7735849, a: 0.8}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &545119062806522090
 GameObject:
   m_ObjectHideFlags: 0
@@ -220,7 +268,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2669774642956663838}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8924987429742582530}
+        m_MethodName: ClickRebind
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2991206486332930040
 GameObject:
   m_ObjectHideFlags: 0

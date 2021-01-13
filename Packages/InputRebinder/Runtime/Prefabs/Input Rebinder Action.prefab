@@ -339,6 +339,7 @@ MonoBehaviour:
   ActionName: {fileID: 7665767638119913425}
   BindingsParent: {fileID: 0}
   InputRebinderBindings: []
+  LastPair: {fileID: 0}
 --- !u!114 &5739042425555764519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -352,7 +353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8006408, g: 0.9811321, b: 0.9741366, a: 0.392}
+  m_Color: {r: 0.44606623, g: 0.5283019, b: 0.47420117, a: 0.77254903}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
