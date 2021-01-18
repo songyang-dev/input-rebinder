@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea0e0aab03fb494695c8fd9f257729b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Binding:
+  OriginalBinding:
     m_Name: 
     m_Id: 
     m_Path: 
@@ -103,16 +103,12 @@ MonoBehaviour:
     m_Groups: 
     m_Action: 
     m_Flags: 0
-  Action:
-    m_Name: 
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
+  Asset: {fileID: 0}
   CurrentBindingText: {fileID: 2087291157409836274}
   ButtonText: {fileID: 4117516087186688112}
+  rebindButton: {fileID: 378974685260514394}
+  resetButton: {fileID: 5399040687910827296}
+  BindingIndex: 0
 --- !u!222 &2470170089889747430
 CanvasRenderer:
   m_ObjectHideFlags: 0

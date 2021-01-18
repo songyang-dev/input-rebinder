@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using System;
 using InputRebinder.Runtime;
@@ -8,7 +6,6 @@ using System.Text;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 namespace InputRebinder.Editor
 {
@@ -77,6 +74,11 @@ namespace InputRebinder.Editor
         /// Component of the input rebinder's binding pair prefab
         /// </summary>
         private BindingPair bindingPair;
+
+        /// <summary>
+        /// Reference to the input action asset on disk
+        /// </summary>
+        private InputActionAsset asset;
 
         #endregion
 
@@ -251,6 +253,8 @@ namespace InputRebinder.Editor
                 .text
                 = display;
 
+            this.asset = asset;
+
             return true;
         }
 
@@ -401,7 +405,9 @@ namespace InputRebinder.Editor
 
             // add refs to the binding
             bindingInstance.OriginalBinding = binding;
-            bindingInstance.Action = action;
+            bindingInstance.Asset = this.asset;
+            bindingInstance.BindingIndex = action.GetBindingIndex(binding);
+
         }
 
         private BindingPair CreatePair(InputRebinderAction action)

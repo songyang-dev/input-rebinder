@@ -13,7 +13,6 @@ namespace InputRebinder.Runtime
         /// <summary>
         /// Reference to the input action inside Unity
         /// </summary>
-        [HideInInspector]
         public InputAction Action;
 
         /// <summary>
@@ -30,13 +29,11 @@ namespace InputRebinder.Runtime
         /// <summary>
         /// List of bindings for this action
         /// </summary>
-        [HideInInspector]
         public List<InputRebinderBinding> InputRebinderBindings;
 
         /// <summary>
         /// The last pair is used to populate the window
         /// </summary>
-        [HideInInspector]
         public BindingPair LastPair;
     }
 }
