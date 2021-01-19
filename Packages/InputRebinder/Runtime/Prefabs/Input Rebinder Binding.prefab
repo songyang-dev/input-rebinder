@@ -109,6 +109,8 @@ MonoBehaviour:
   rebindButton: {fileID: 378974685260514394}
   resetButton: {fileID: 5399040687910827296}
   BindingIndex: 0
+  MapName: 
+  ActionName: 
 --- !u!222 &2470170089889747430
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -660,7 +662,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 184927406247820259}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8924987429742582530}
+        m_MethodName: ClickReset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8432851380488220163
 GameObject:
   m_ObjectHideFlags: 0

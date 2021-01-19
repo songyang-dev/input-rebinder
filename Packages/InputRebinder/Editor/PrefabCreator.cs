@@ -407,7 +407,8 @@ namespace InputRebinder.Editor
             bindingInstance.OriginalBinding = binding;
             bindingInstance.Asset = this.asset;
             bindingInstance.BindingIndex = action.GetBindingIndex(binding);
-
+            bindingInstance.MapName = action.actionMap.name;
+            bindingInstance.ActionName = action.name;
         }
 
         private BindingPair CreatePair(InputRebinderAction action)

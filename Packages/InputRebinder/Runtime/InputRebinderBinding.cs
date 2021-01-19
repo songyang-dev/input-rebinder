@@ -51,6 +51,16 @@ namespace InputRebinder.Runtime
         public int BindingIndex;
 
         /// <summary>
+        /// Name of the input action map that this binding is in
+        /// </summary>
+        public string MapName;
+
+        /// <summary>
+        /// Name of the input action that this binding is in
+        /// </summary>
+        public string ActionName;
+
+        /// <summary>
         /// Reference to the input action, will search if not set
         /// </summary>
         /// <value></value>
@@ -73,12 +83,12 @@ namespace InputRebinder.Runtime
         private void GetAction()
         {
             this._action = InputActionReference.Create(
-                this.Asset.FindActionMap("Player").FindAction("Move")
+                this.Asset.FindActionMap(this.MapName).FindAction(this.ActionName)
             );
         }
 
         /// <summary>
-        /// Event when click the rebind button
+        /// Event listener of when the rebind button is clicked
         /// </summary>
         public void ClickRebind()
         {
@@ -112,19 +122,30 @@ namespace InputRebinder.Runtime
                 .WithCancelingThrough("<Keyboard>/escape")
 
                 // Dispose the operation on completion.
-                .OnComplete(operation => ResetTextAndButtons(operation))
-                .OnCancel(operation => ResetTextAndButtons(operation))
+                .OnComplete(operation => {operation.Dispose(); ResetTextAndButtons();})
+                .OnCancel(operation => {operation.Dispose(); ResetTextAndButtons();})
                 .Start();
         }
 
-        private void ResetTextAndButtons(InputActionRebindingExtensions.RebindingOperation operation)
+        /// <summary>
+        /// Sets the UI back to ready state
+        /// </summary>
+        private void ResetTextAndButtons()
         {
-            operation.Dispose();
             this.ButtonText.text = "Rebind";
             this.CurrentBindingText.text =
                 this.Action.action.bindings[this.BindingIndex].ToDisplayString(InputBinding.DisplayStringOptions.DontOmitDevice);
             this.rebindButton.enabled = true;
             this.resetButton.enabled = true;
+        }
+
+        /// <summary>
+        /// Event listener of when the reset button is clicked
+        /// </summary>
+        public void ClickReset()
+        {
+            this.Action.action.RemoveBindingOverride(this.BindingIndex);
+            ResetTextAndButtons();
         }
     }
 }
