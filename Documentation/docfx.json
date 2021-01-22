@@ -8,15 +8,15 @@
                 }
             ],
             "globalNamespaceId": "Global",
-	    "disableDefaultFilter": true,
-            "filter": "filterConfig.yml",
-            "dest": "api"
+	    "disableDefaultFilter": false,
+        "filter": "filterConfig.yml",
+        "dest": "api"
         }
     ],
     "build": {
         "globalMetadata": {
-            "_appTitle": "Example Unity documentation",
-            "_appFooter": "Example Unity documentation",
+            "_appTitle": "Input Rebinder documentation",
+            "_appFooter": "Input Rebinder documentation",
             "_enableSearch": true
         },
         "content": [
@@ -32,11 +32,6 @@
                 "src": "manual",
                 "files": [ "toc.yml", "*.md" ],
                 "dest": "manual"
-            },
-            {
-                "src": "specs",
-                "files": [ "*.yml", "*.md"],
-                "dest": "specs"
             }
         ],
         "overwrite": [
@@ -52,7 +47,7 @@
         ],
         "sitemap":
         {
-            "baseUrl": "https://normanderwan.github.io/DocFxForUnity",
+            "baseUrl": "https://www.github.com/XsongyangX/input-rebinder",
             "changefreq": "weekly",
             "fileOptions": {
                 "api/*": {
@@ -60,7 +55,7 @@
                 }
             }
         },
-        "xref": [ "https://normanderwan.github.io/DocFxForUnity/Unity/xrefmap.yml" ],
+        "xref": [ "https://www.github.com/XsongyangX/input-rebinder" ],
         "xrefService": [ "https://xref.docs.microsoft.com/query?uid={uid}" ],
         "dest": "_site"
     }

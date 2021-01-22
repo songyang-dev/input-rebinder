@@ -109,6 +109,7 @@ namespace InputRebinder.Runtime
         /// <param name="actionToRebind"></param>
         internal void InitiateRebindOperation(InputAction actionToRebind)
         {
+            actionToRebind.Disable();
             var rebindOperation = actionToRebind.PerformInteractiveRebinding(this.BindingIndex)                
 
                 // To avoid accidental input from mouse motion
@@ -122,8 +123,18 @@ namespace InputRebinder.Runtime
                 .WithCancelingThrough("<Keyboard>/escape")
 
                 // Dispose the operation on completion.
-                .OnComplete(operation => {operation.Dispose(); ResetTextAndButtons();})
-                .OnCancel(operation => {operation.Dispose(); ResetTextAndButtons();})
+                .OnComplete(operation => 
+                {
+                    operation.Dispose(); 
+                    actionToRebind.Enable();
+                    ResetTextAndButtons();
+                })
+                .OnCancel(operation => 
+                {
+                    operation.Dispose(); 
+                    actionToRebind.Enable();
+                    ResetTextAndButtons();
+                })
                 .Start();
         }
 
