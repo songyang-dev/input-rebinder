@@ -1,18 +1,25 @@
 {
-    "name": "com.songyang.inputrebinder",
-    "version": "0.1.0",
-
-    "displayName": "Input Rebinder",
-    "description": "An editor plugin that analyzes Unity's new input system files and generates a ready-to-use prefab for rebinding inputs at runtime.",
-    "unity": "2019.4",
-
-    "keywords": ["input system", "ui", "controls", "editor plugin", "editor extension", "input rebinding"],
-    "author": { "name": "Song Yang", "email": "songyang1218@gmail.com", "url": "https://xsongyangx.github.io/"},
-
-    "dependencies": {
-        "com.unity.inputsystem": "1.0.1",
-        "com.unity.textmeshpro": "2.1.3",
-        "com.unity.test-framework": "1.1.20"
-    }
-
+  "name": "com.songyang.inputrebinder",
+  "version": "1.0.0",
+  "displayName": "Input Rebinder",
+  "description": "An editor plugin that analyzes Unity's new input system files and generates a ready-to-use prefab for rebinding inputs at runtime.",
+  "unity": "2019.4",
+  "keywords": [
+    "input system",
+    "ui",
+    "controls",
+    "editor plugin",
+    "editor extension",
+    "input rebinding"
+  ],
+  "author": {
+    "name": "Song Yang",
+    "email": "songyang1218@gmail.com",
+    "url": "https://xsongyangx.github.io/"
+  },
+  "dependencies": {
+    "com.unity.inputsystem": "1.0.1",
+    "com.unity.textmeshpro": "2.1.3",
+    "com.unity.test-framework": "1.1.20"
+  }
 }

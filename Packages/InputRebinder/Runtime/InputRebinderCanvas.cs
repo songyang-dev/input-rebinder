@@ -15,14 +15,5 @@ namespace InputRebinder.Runtime
         /// </summary>
         [Tooltip("Text with the version number and name")]
         public TMPro.TextMeshProUGUI PluginVersion;
-
-
-        /// <summary>
-        /// Listener to when the close button is clicked
-        /// </summary>
-        public void ClickClose()
-        {
-            this.gameObject.SetActive(false);
-        }
     }
 }

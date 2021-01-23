@@ -71,7 +71,7 @@ namespace InputRebinder.Editor
         /// <summary>
         /// Makes the plugin show up in unity menu
         /// </summary>
-        [MenuItem("Window/Input Rebinder")]
+        [MenuItem("Tools/Input Rebinder")]
         internal static void ShowWindow()
         {
             window = EditorWindow.GetWindow(typeof(UserGUI)) as UserGUI;
