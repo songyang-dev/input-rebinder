@@ -1,4 +1,11 @@
-- name: Coniunctis nec qui
-  href: coniunctis.md
-- name: Etiam nantemque exul
-  href: etiam.md
+- name: Getting Started
+  href: Getting_Started.md
+- name: How to
+  href: How_to.md
+  items:
+    - name: Ignore actions and action maps
+      href: Ignore_Actions.md
+    - name: Customize appearance
+      href: Customize_Appearance.md
+    - name: Add functionality
+      href: Add_Functionality.md

@@ -4,11 +4,14 @@ using UnityEngine;
 
 namespace InputRebinder.Runtime
 {
-public class BindingPair : MonoBehaviour
-{
     /// <summary>
-    /// Number of bindings in the pair for now
+    /// Container that holds at most 2 bindings for display
     /// </summary>
-    public int Count = 0;
-}
+    public class BindingPair : MonoBehaviour
+    {
+        /// <summary>
+        /// Number of bindings in the pair for now
+        /// </summary>
+        public int Count = 0;
+    }
 }

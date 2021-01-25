@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 namespace InputRebinder.Runtime
 {
+    /// <summary>
+    /// Content window of the selected action map
+    /// </summary>
     [RequireComponent(typeof(ScrollRect))]
     public class ActionMapDisplayScroll : MonoBehaviour
     {
