@@ -1,0 +1,4 @@
+- name: Manual
+  href: ../manual/toc.yml
+- name: Scripting API
+  href: ../api/toc.yml

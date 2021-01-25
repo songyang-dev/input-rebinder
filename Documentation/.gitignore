@@ -1,7 +1,7 @@
 # Documentation gitignore
 
 # generation targets
-_site/
+_site*/
 api/
 
 # cache
