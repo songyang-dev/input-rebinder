@@ -17,8 +17,8 @@
     ],
     "build": {
         "globalMetadata": {
-            "_appTitle": "Input Rebinder documentation",
-            "_appFooter": "Input Rebinder documentation",
+            "_appTitle": "Input Rebinder 1.0.0 documentation",
+            "_appFooter": "Input Rebinder 1.0.0 documentation",
             "_enableSearch": true
         },
         "content": [
@@ -60,7 +60,7 @@
             }
         ],
         "sitemap": {
-            "baseUrl": "https://www.github.com/XsongyangX/input-rebinder",
+            "baseUrl": "https://www.github.com/XsongyangX/input-rebinder-doc",
             "changefreq": "weekly",
             "fileOptions": {
                 "api/*": {
@@ -69,7 +69,7 @@
             }
         },
         "xref": [
-            "https://www.github.com/XsongyangX/input-rebinder"
+            "https://normanderwan.github.io/DocFxForUnity/Unity/2019.4/xrefmap.yml"
         ],
         "xrefService": [
             "https://xref.docs.microsoft.com/query?uid={uid}"
