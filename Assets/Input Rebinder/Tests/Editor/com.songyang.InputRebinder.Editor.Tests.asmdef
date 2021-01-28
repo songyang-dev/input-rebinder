@@ -1,5 +1,5 @@
 {
-    "name": "Unity.com.songyang.InputRebinder.Editor.Tests",
+    "name": "com.songyang.InputRebinder.Editor.Tests",
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
