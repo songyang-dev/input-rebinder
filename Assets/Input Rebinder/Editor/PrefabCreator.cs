@@ -6,6 +6,7 @@ using System.Text;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
+using System.IO;
 
 namespace InputRebinder.Editor
 {
@@ -93,34 +94,56 @@ namespace InputRebinder.Editor
         private readonly string newPrefabName;
 
         /// <summary>
+        /// Location of the prefab templates
+        /// </summary>
+        private string pathToPrefabs;
+
+        /// <summary>
         /// Path to the generation template prefab
         /// </summary>
-        private const string pathToGenerationTemplate = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Template.prefab";
+        private string pathToGenerationTemplate = "Input Rebinder Template.prefab";
 
         /// <summary>
         /// Path to the action map button prefab
         /// </summary>
-        private const string pathToActionMapButton = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Map Button.prefab";
+        private string pathToActionMapButton = "Map Button.prefab";
 
         /// <summary>
         /// Path to the action map content prefab
         /// </summary>
-        private const string pathToActionMapContent = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Map Content.prefab";
+        private string pathToActionMapContent = "Map Content.prefab";
 
         /// <summary>
         /// Path to the action prefab
         /// </summary>
-        private const string pathToAction = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Action.prefab";
+        private string pathToAction = "Input Rebinder Action.prefab";
 
         /// <summary>
         /// Path to the binding prefab
         /// </summary>
-        private const string pathToBinding = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Binding.prefab";
+        private string pathToBinding = "Input Rebinder Binding.prefab";
 
         /// <summary>
         /// Path to the binding pair prefab
         /// </summary>
-        private const string pathToBindingPair = "Packages/com.songyang.inputrebinder/Runtime/Prefabs/Input Rebinder Binding Pair.prefab";
+        private string pathToBindingPair = "Input Rebinder Binding Pair.prefab";
+
+        /// <summary>
+        /// Finds the folder where the prefab templates are
+        /// </summary>
+        private void LocatePrefabs()
+        {
+            if (File.Exists("Packages/Input Rebinder/Runtime/Prefabs/"))
+                this.pathToPrefabs = "Packages/Input Rebinder/Runtime/Prefabs/";
+            else this.pathToPrefabs = "Assets/Input Rebinder/Runtime/Prefabs/";
+
+            this.pathToAction = Path.Combine(this.pathToPrefabs, this.pathToAction);
+            this.pathToActionMapButton = Path.Combine(this.pathToPrefabs, this.pathToActionMapButton);
+            this.pathToActionMapContent = Path.Combine(this.pathToPrefabs, this.pathToActionMapContent);
+            this.pathToBinding = Path.Combine(this.pathToPrefabs, this.pathToBinding);
+            this.pathToBindingPair = Path.Combine(this.pathToPrefabs, this.pathToBindingPair);
+            this.pathToGenerationTemplate = Path.Combine(this.pathToPrefabs, this.pathToGenerationTemplate);
+        }
 
         /// <summary>
         /// Creates an instance of this class
@@ -138,6 +161,7 @@ namespace InputRebinder.Editor
             CreateFolders(newPrefabFolder);
 
             // load prefabs
+            LocatePrefabs();
             LoadPrefabs();
         }
 
@@ -246,7 +270,13 @@ namespace InputRebinder.Editor
         {
             var info = UnityEditor.PackageManager.PackageInfo
                 .FindForAssetPath(pathToGenerationTemplate);
-            var display = $"{info.displayName} {info.version}";
+
+            string display;
+
+            if (info != null) 
+                display = $"{info.displayName} {info.version}";
+            else
+                display = "Input Rebinder (custom version)";
 
             this.canvas.GetComponent<InputRebinderCanvas>()
                 .PluginVersion

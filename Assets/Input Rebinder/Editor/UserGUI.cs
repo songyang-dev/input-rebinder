@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using InputRebinder.Runtime;
 
 using System.Runtime.CompilerServices;
-[assembly: InternalsVisibleTo("Unity.com.songyang.inputrebinder.Editor.Tests")]
+[assembly: InternalsVisibleTo("com.songyang.inputrebinder.Editor.Tests")]
 
 /// <summary>
 /// Namespace for the input rebinder plugin

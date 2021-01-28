@@ -3,6 +3,8 @@
 ## Importing
 To import this package in your project, you need to use Unity's package manager ("Window" > "Package Manager"). From there, follow the instructions for your situation. If the package is already on your disk, click "Add package from disk...". Otherwise, you need to acquire the package from the Asset Store.
 
+It may be possible that Unity tells you to import TextMeshPro. Then you should import the essentials.
+
 ## Generate an in-game UI
 ### Step 1
 Go to "Tools" > "Input Rebinder". This will open the editor plugin's window.
