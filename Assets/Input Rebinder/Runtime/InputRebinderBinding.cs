@@ -111,6 +111,9 @@ namespace InputRebinder.Runtime
         {
             actionToRebind.Disable();
             var rebindOperation = actionToRebind.PerformInteractiveRebinding(this.BindingIndex)                
+                
+                // BUG WORKAROUND: https://forum.unity.com/threads/rebind-bug-arrows-print-screen.807060/
+                .WithControlsExcluding("<Keyboard>/printScreen")
 
                 // To avoid accidental input from mouse motion
                 .WithControlsExcluding("Mouse")
