@@ -436,7 +436,7 @@ namespace InputRebinder.Editor
             // add refs to the binding
             bindingInstance.OriginalBinding = binding;
             bindingInstance.Asset = this.asset;
-            bindingInstance.BindingIndex = action.GetBindingIndex(binding);
+            bindingInstance.BindingIndex = action.GetBindingIndex(path: binding.path);
             bindingInstance.MapName = action.actionMap.name;
             bindingInstance.ActionName = action.name;
         }
