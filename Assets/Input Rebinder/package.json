@@ -3,7 +3,7 @@
   "version": "1.1.2",
   "displayName": "Input Rebinder",
   "description": "An editor plugin that analyzes Unity's new input system files and generates a ready-to-use prefab for rebinding inputs at runtime.",
-  "unity": "2020.3",
+  "unity": "2021.3",
   "keywords": [
     "input system",
     "ui",
